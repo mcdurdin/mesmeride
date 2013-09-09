@@ -10,4 +10,8 @@ class StaticPagesController < ApplicationController
   
   def contact
   end
+  
+  def signin
+    redirect_to '/auth/strava'
+  end
 end

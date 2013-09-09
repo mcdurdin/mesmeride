@@ -11,6 +11,9 @@ gem 'bootstrap-will_paginate', '0.0.9'
 
 gem 'pg', '0.15.1'
 
+gem 'omniauth'
+gem 'omniauth-strava', github: 'thogg4/omniauth-strava'
+
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem 'guard-rspec', '2.5.0'
