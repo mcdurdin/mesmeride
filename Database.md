@@ -3,10 +3,23 @@ Database
 User
  - id
  - name
+ 
+Authentication
+ - uid
+ - 
  - access_token
+
+StravaActivity
+ - id
+ - activity_id
+ - raw_data : text
+ - name
+ - start_date
  
 Path
  - id
+ - source : string = strava
+ - type : string = route | activity | segment
  - name
  - style
  - data_id
