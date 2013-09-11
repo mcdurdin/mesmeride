@@ -16,20 +16,20 @@ StravaActivity
  - name
  - start_date
  
-Path
+Route
  - id
- - source : string = strava
- - type : string = route | activity | segment
+ - source : string = StravaActivity | StravaSegment | StravaRoute
+ - source_id : string
  - name
  - style
  - data_id
  
-Pathdata
- - id
- - data_json
+#Pathdata
+# - id
+# - data_json
  
 Waypoint
  - name
- - distance_at
+ - distance_at (m)
  - elevation
  - format options?

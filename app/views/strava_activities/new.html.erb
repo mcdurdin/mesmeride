@@ -1,0 +1,7 @@
+<h1>Import Strava Activity</h1>
+
+    <%= form_for(@strava_activity) do |f| %>
+      <%= f.label :activity_id %>
+      <%= f.text_field :activity_id %>
+      <%= f.submit "Download Activity", class: "btn btn-primary" %>
+    <% end %>
