@@ -13,8 +13,10 @@ class StravaActivitiesController < ApplicationController
     if @strava_activity.nil?
         result_json = get_strava_data("activities/#{activity_id}")
         # todo : failure test
-        result = JSON.parse(result_json)    
-        @strava_activity = StravaActivity.create :name => result["name"], :activity_id => activity_id, :raw_data => result_json
+        # result = JSON.parse(result_json)    
+        @strava_activity = StravaActivity.new :activity_id => activity_id, :raw_data => result_json
+        @strava_activity.name = @strava_activity.data["name"]
+        @strava_activity.save
     end
     
     redirect_to routes_new_url(:activity_id => activity_id)
