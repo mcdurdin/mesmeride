@@ -21,7 +21,6 @@ class RoutesController < ApplicationController
 
   def edit
     @route = Route.find(params[:id])
-    # render :text => params[:id]
   end
 
   def update

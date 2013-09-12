@@ -1,3 +1,59 @@
 // Place all the styles related to the Routes controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.toolbox {
+  border: solid 1px #333333;
+  border-radius: 6px;
+  padding: 4px;
+  background: #eeeeee;
+}
+
+#surface-container {
+  position: absolute;
+  height: 500px;
+  width: 95%;
+  left: 0;
+  top: 41px;
+  z-index: 0;
+}
+
+#surface {
+  width: 100%;
+}
+
+#tools, #controls {
+  width: 200px;
+  right: 32px;
+  display: block;
+  position: fixed;
+}
+
+#tools {
+  top: 100px;
+}
+
+#waypoints {
+  width: 90%;
+  height: 200px;
+  display: block;
+  position: fixed;
+  left: 5%;
+  bottom: 32px;
+}
+
+footer {
+  display: none;
+}
+
+.debug_dump {
+  position: fixed;
+  display: none;
+}
+
+#bottom-anchor {
+  bottom: 0;
+  position: fixed;
+  height: 0;
+  width: 100%
+}
