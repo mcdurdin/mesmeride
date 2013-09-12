@@ -15,6 +15,9 @@ class RoutesController < ApplicationController
       # todo: import from segment and from route
       @route = Route.import_from_activity(params[:route][:source_id])
       
+      #render :text => @route
+      #return
+      
       redirect_to edit_route_path(:id => @route.id)
     end
   end

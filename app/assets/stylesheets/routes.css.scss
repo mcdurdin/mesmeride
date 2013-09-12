@@ -9,13 +9,25 @@
   background: #eeeeee;
 }
 
+html, body {
+  overflow: hidden;
+}
+
+.footbox {
+  bottom: 0;
+  position: fixed;
+  border-top: solid 1px #333333;
+  background: #eeeeee;
+}
+
 #surface-container {
   position: absolute;
   height: 500px;
-  width: 95%;
+  width: 100%;
   left: 0;
   top: 41px;
   z-index: 0;
+  overflow: auto;
 }
 
 #surface {
@@ -30,16 +42,19 @@
 }
 
 #tools {
-  top: 100px;
+  top: 56px;
 }
 
 #waypoints {
-  width: 90%;
-  height: 200px;
+  width: 100%;
+  height: 160px;
   display: block;
   position: fixed;
-  left: 5%;
-  bottom: 32px;
+  left: 0;
+  
+  input {
+    margin-bottom: 0px;
+  }
 }
 
 footer {

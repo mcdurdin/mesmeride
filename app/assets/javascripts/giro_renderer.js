@@ -59,7 +59,7 @@ redraw: function() {
       for(var i = 0; i < segs.length; i++) {
         var seg = {
           endX: segs[i].distance, 
-          endY: null, 
+          endY: segs[i].elevation, 
           name: segs[i].name, 
           difficulty: 8000
         };

@@ -12,7 +12,7 @@ class StravaActivitiesController < ApplicationController
     @strava_activity = StravaActivity.find_by_activity_id(activity_id)
     if @strava_activity.nil?
         activity_json = get_strava_data("activities/#{activity_id}")
-        stream_json = get_strava_data("activities/#{activity_id}/streams/distance,altitude,grade_smooth")
+        stream_json = get_strava_data("activities/#{activity_id}/streams/time,distance,altitude,grade_smooth") #?resolution=high")
         # todo : failure test
         # result = JSON.parse(result_json)
         

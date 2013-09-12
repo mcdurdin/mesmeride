@@ -5,16 +5,19 @@
 <div class='toolbox' id='tools'>
   Route Name: <%= @route.name %>
   # tools: rotate, zoom, template
+  <div id='zoom-slider'></div>
 </div>
 <div class='toolbox' id='controls'>
   <button onclick='stravaOnSteroids.export()'>Export</button>
+  <button onclick='save()'>Save</button>
   # controls: export-png, canvas-size, 
 </div>
 
-<div class='toolbox' id='waypoints'>
+<div class='footbox' id='waypoints'>
   <table>
     <%= render @route.waypoints %>
   </table>
+  <%= button_tag "Add Waypoint" %>
 </div>
 
 <div id='bottom-anchor'></div>
