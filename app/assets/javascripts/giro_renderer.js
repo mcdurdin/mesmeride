@@ -501,8 +501,8 @@ drawGiro: function(data, xf, yf, xStep, yStep, FitGradient, angle) {
 
 export: function() {
   var c = document.getElementById('surface');
-  var img = c.toDataURL('image/png');
-  window.open(img); //img.replace('image/png','image/octet-stream');
+  var img = c.toDataURL('image/png'); // todo: push to server and present as downloadable file.
+  location.href = img.replace('image/png','image/octet-stream');
 }
 
 };
