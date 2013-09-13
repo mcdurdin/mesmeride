@@ -47,15 +47,15 @@ $ ->
     return -1
   
   attachWaypointEvents = ->
-    $( "#waypoints table input[type='text']" ).keyup -> 
+    $( "#waypoints table tr:not(tr.bound) input[type='text']" ).keyup -> 
       waypointChange this
       modified = true
     
-    $( "#waypoints table input[type='text']" ).change -> 
+    $( "#waypoints table tr:not(tr.bound) input[type='text']" ).change -> 
       waypointChange this
       modified = true
       
-    $( "#waypoints table button.close" ).click ->
+    $( "#waypoints table tr:not(tr.bound) button.close" ).click ->
       for w,i in waypoints
         if w.id == waypointId(this)
           waypoints.splice i,1
@@ -64,7 +64,7 @@ $ ->
       $(this).parent().parent().find('.input-destroy').val(1)
       stravaOnSteroids.postRedraw()
       
-    $( "#waypoints .waypoint-distance" ).each ->
+    $( "#waypoints table tr:not(tr.bound) .waypoint-distance" ).each ->
       refreshWaypoint = (e) ->
         waypoint = getWaypoint(e)
         waypoint.distance = $(e).slider('value')
@@ -116,6 +116,8 @@ $ ->
         container: 'body'
       ).unbind('keydown')
       
+    $('#waypoints table tr').addClass('bound')
+    
   attachWaypointEvents()
   
   $('form a.add_child').click ->
@@ -134,6 +136,7 @@ $ ->
       name: ''
     window.waypoints.push(waypoint)
     attachWaypointEvents()
+    stravaOnSteroids.postRedraw()
     
   #
   # Save and Export
@@ -150,5 +153,5 @@ $ ->
 #
 
 $(window).resize ->
-  $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('#waypoints').outerHeight());
-  stravaOnSteroids.postRedraw();
+  $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('#waypoints').outerHeight())
+  stravaOnSteroids.postRedraw()
