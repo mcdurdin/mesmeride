@@ -63,6 +63,10 @@ html, body {
     margin-bottom: 0px;
   }
   
+  tr.disabled {
+    display: none;
+  }
+  
   .waypoint-distance {
     width: 240px;
     margin: 0 16px;

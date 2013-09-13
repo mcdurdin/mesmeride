@@ -12,7 +12,6 @@ class RoutesController < ApplicationController
   def create
     if params[:route][:source] == "StravaActivity"
       # Import the route from strava activity
-      # todo: import from segment and from route
       @route = Route.import_from_activity(params[:route][:source_id])
       
       #render :text => @route
@@ -20,6 +19,7 @@ class RoutesController < ApplicationController
       
       redirect_to edit_route_path(:id => @route.id)
     end
+    # todo: import from segment and from route
   end
 
   def edit
@@ -32,7 +32,7 @@ class RoutesController < ApplicationController
     # render :text => params.inspect
     @route = Route.find(params[:id])
     if @route.update_attributes(route_params)
-      flash[:notice] = "Successfully updated route."
+      flash[:notice] = "Route saved."
       redirect_to edit_route_path(:id => @route.id)
     else
       render :action => 'edit'
@@ -45,6 +45,6 @@ class RoutesController < ApplicationController
   private
   
     def route_params
-      params.require(:route).permit(:name, waypoints_attributes: [ :id, :name, :distance ] )
+      params.require(:route).permit(:name, waypoints_attributes: [ :id, :name, :distance, :elevation, :_destroy ] )
     end
 end

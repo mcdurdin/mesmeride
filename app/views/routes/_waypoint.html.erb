@@ -1,0 +1,15 @@
+<tr data-id='<%= f.object.id %>'>
+  <td>
+    <%= f.hidden_field :id %>
+    <%= f.hidden_field :distance %>
+    <%= f.hidden_field :elevation %>
+    <%= f.hidden_field :_destroy, :class => 'input-destroy' %>
+    <%= f.text_field :name %>
+  </td>
+  <td>
+    <div class='waypoint-distance'></div>
+  </td>
+  <td>
+    <%= button_tag "×", :type => 'button', :class => 'close' %>
+  </td>
+</tr>

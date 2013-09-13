@@ -22,14 +22,15 @@
     <tbody>
        <!--@route.waypoints.each do |waypoint|  -->
         <%= f.fields_for :waypoints do |wf| %>
-          
-          <% render :partial => 'waypoints/waypoint', :locals => { :f => wf } %>
+          <% render :partial => 'waypoint', :locals => { :f => wf } %>
         <% end %>
       <!-- end -->
       <!-- render @route.waypoints -->
       </tbody>
     </table>
-    <%= button_tag "Add Waypoint", :id => 'add-waypoint-button' %>
+    
+    <%= add_child_link "Add Waypoint", :waypoints ,'btn btn-small' %></p>
+    <%= new_child_fields_template f, :waypoints %>
   <% end %>
 </div>
   
@@ -39,5 +40,11 @@
   var streams = <%= raw @route.streams %>;
   var waypoints = <%= raw @route.waypoints.to_json %>;
 </script>
+
+<div id='jstemplates'>
+  <table>
+    <%= yield :jstemplates %>
+  </table>
+</div>
 
 <%= javascript_include_tag "giro_renderer", "data-turbolinks-track" => true %>

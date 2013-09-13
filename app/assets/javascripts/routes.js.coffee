@@ -30,7 +30,6 @@ $ ->
   waypointChange = (e) ->  
     for w in waypoints 
       w.name = $(e).val() if w.id == waypointId(e)
-        
     stravaOnSteroids.postRedraw();
     
   waypointId = (elem) ->
@@ -48,19 +47,21 @@ $ ->
     return -1
   
   attachWaypointEvents = ->
-    $( "#waypoints input[type='text']" ).keyup -> waypointChange this
-    $( "#waypoints input[type='text']" ).change -> 
+    $( "#waypoints table input[type='text']" ).keyup -> 
       waypointChange this
       modified = true
-    $( "#waypoints button.close" ).click ->
+    
+    $( "#waypoints table input[type='text']" ).change -> 
+      waypointChange this
+      modified = true
+      
+    $( "#waypoints table button.close" ).click ->
       for w,i in waypoints
         if w.id == waypointId(this)
           waypoints.splice i,1
           break
-      $(this).parent().parent().find('input,div,button').attr('disabled','disabled')
-      # $(this).parent().parent().find('.waypoint-distance').slider('disable')
-      $(this).parent().parent().find('.input-destroy').val(1) # '#waypoints tr[id=#{waypointId(this)}] ').disable() 
-      # this).parent().parent().detach()
+      $(this).parent().parent().addClass('disabled')
+      $(this).parent().parent().find('.input-destroy').val(1)
       stravaOnSteroids.postRedraw()
       
     $( "#waypoints .waypoint-distance" ).each ->
@@ -70,14 +71,22 @@ $ ->
         waypoint.elevation = getElevationByDistance(waypoint.distance)
         stravaOnSteroids.postRedraw()
         $('.ui-slider-handle',e).tooltip('show')
+        
+        $(e).parent().parent().find('input[type=hidden]').filter ->
+          this.id.match(/route_waypoints_attributes_.*_distance/)
+        .val(waypoint.distance)
+        
+        $(e).parent().parent().find('input[type=hidden]').filter ->
+          this.id.match(/route_waypoints_attributes_.*_elevation/)
+        .val(waypoint.elevation)
 
       $(this).slider(
         min: 0
         max: routeDistance
         step: 1
         value: getWaypoint(this).distance
-        slide: ->
-          refreshWaypoint(this)
+        slide: -> refreshWaypoint(this)
+        change: -> refreshWaypoint(this)
           
       #
       # override default keyboard events because pgup/dn are too large an increment
@@ -94,6 +103,10 @@ $ ->
           else return true
         refreshWaypoint(this)
         event.preventDefault()
+        
+      #
+      # Add a tooltip to the slider
+      #
 
       $('.ui-slider-handle',this).tooltip(
         title: ->
@@ -105,22 +118,22 @@ $ ->
       
   attachWaypointEvents()
   
-  $( '#add-waypoint-button').click ->
-    # todo: refactor this into a partial
-    $( '#waypoints table tbody' ).append(
-      "<tr data-id='#{waypointUniqueId}'>"+
-      "<td><input type='text'></td>"+
-      "<td><div class='waypoint-distance'></div></td>"+
-      "<td><button class='close' type='submit'>×</button></td>"+
-      "</tr>")
+  $('form a.add_child').click ->
+    association = $(this).attr('data-association')
+    template = $('#' + association + '_fields_template').html()
+    regexp = new RegExp('new_' + association, 'g')
+    new_id = new Date().getTime()
+
+    $('#waypoints table tbody').append(template.replace(regexp, new_id))
+    $('#waypoints tr[data-id=""]').data('id', new_id)
+
     waypoint =
-      id: waypointUniqueId
+      id: new_id
       distance: 0
       elevation: window.streams.altitude[0]
       name: ''
     window.waypoints.push(waypoint)
     attachWaypointEvents()
-    waypointUniqueId--
     
   #
   # Save and Export
@@ -130,9 +143,8 @@ $ ->
     stravaOnSteroids.export()
     
   $('#save-button').click ->
-    # $('#waypoints_field').val(JSON.stringify(waypoints))
-    # .parents('form').submit()
     $('.edit_route').submit()
+    
 #
 # Window resizing
 #
