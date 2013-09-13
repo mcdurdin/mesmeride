@@ -4,7 +4,15 @@
     
     <p>Signed in.</p>
     
-    <!-- todo: render recent rides -->
+    <h2>Your Routes</h2>
+    <div id='route-list'>
+      <% if !@routes.nil? %>
+        <%= render "routes/index" %>
+        <!--  will_paginate @routes -->
+      <% else %>
+        No routes.
+      <% end %>
+    </div>
     
     <%= link_to "Download Activity", get_activity_path %>
   </div>

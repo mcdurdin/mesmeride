@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-  has_many :authentications
+  has_many :authentications, dependent: :destroy
+  has_many :users, dependent: :destroy
 
   before_create :create_remember_token
   

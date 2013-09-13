@@ -1,11 +1,12 @@
 class Route < ActiveRecord::Base
+  belongs_to :user
   has_many :waypoints, dependent: :destroy
   accepts_nested_attributes_for :waypoints, :allow_destroy => true
   
-  def self.import_from_activity(activity_id)
+  def self.import_from_activity(activity_id, user_id)
     activity = StravaActivity.find_by_activity_id(activity_id)
     
-    @route = Route.create(:name => activity.name, :source => "StravaActivity", :source_id => activity_id)
+    @route = Route.create(:name => activity.name, :source => "StravaActivity", :source_id => activity_id, :user_id => user_id)
 
     start_date = DateTime.iso8601(activity.data["activity"]["start_date"]).to_i
 

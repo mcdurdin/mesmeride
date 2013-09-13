@@ -8,13 +8,13 @@ class RoutesController < ApplicationController
   end
 
   def new
-    @route = Route.new :source => "StravaActivity", :source_id => params[:activity_id]
+    @route = Route.new :source => "StravaActivity", :source_id => params[:activity_id], :user_id => current_user.id
   end
   
   def create
     if params[:route][:source] == "StravaActivity"
       # Import the route from strava activity
-      @route = Route.import_from_activity(params[:route][:source_id])
+      @route = Route.import_from_activity(params[:route][:source_id], current_user.id)
       
       #render :text => @route
       #return

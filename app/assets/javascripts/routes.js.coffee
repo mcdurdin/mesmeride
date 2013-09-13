@@ -5,7 +5,7 @@
 modified = false
 waypointUniqueId = -1
 
-$ ->
+$(document).on "page:change", ->
 
   if ($('.toolbox').length == 0) then return
   
