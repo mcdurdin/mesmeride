@@ -1,15 +1,14 @@
 Mesmeride::Application.routes.draw do
-  get "waypoints/index"
-  get "waypoints/create"
-  get "waypoints/destroy"
-
   #get "strava_activity/new"
 
   match '/auth/:provider/callback', :to => 'sessions#create', via: 'get'
   root 'static_pages#home'
   resources :sessions, only: [:create, :destroy]
   resources :strava_activities, only: [:create]
-  resources :routes, only: [:index, :new, :edit, :show, :create, :update, :destroy]
+  resources :routes do
+    # only: [:index, :new, :edit, :show, :create, :update, :destroy]
+    resources :waypoints, only: [:index, :create, :destroy]
+  end
 
   #match '/routes', :to => 'routes#index', via: 'get'
   #match '/routes/new', :to => 'routes#new', via: 'get'

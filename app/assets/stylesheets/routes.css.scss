@@ -2,6 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.alert {
+  position: absolute;
+  width: 800px;
+  z-index: 10;
+}
+
 .toolbox {
   border: solid 1px #333333;
   border-radius: 6px;
@@ -51,9 +57,19 @@ html, body {
   display: block;
   position: fixed;
   left: 0;
+  overflow-y: auto;
   
   input {
     margin-bottom: 0px;
+  }
+  
+  .waypoint-distance {
+    width: 240px;
+    margin: 0 16px;
+    
+    &[disabled="disabled"] {
+      visibility: hidden;
+    }
   }
 }
 

@@ -8,18 +8,31 @@
   <div id='zoom-slider'></div>
 </div>
 <div class='toolbox' id='controls'>
-  <button onclick='stravaOnSteroids.export()'>Export</button>
-  <button onclick='save()'>Save</button>
+  <%= button_tag "Export", :id => 'export-button' %>
+  <%= button_tag "Save Route", :id => 'save-button' %>
   # controls: export-png, canvas-size, 
 </div>
 
 <div class='footbox' id='waypoints'>
-  <table>
-    <%= render @route.waypoints %>
-  </table>
-  <%= button_tag "Add Waypoint" %>
+  <%= form_for @route do |f| %>
+    <table>
+    <thead>
+      <tr><th>Name</th><th>Distance</th></tr>
+    </thead>
+    <tbody>
+       <!--@route.waypoints.each do |waypoint|  -->
+        <%= f.fields_for :waypoints do |wf| %>
+          
+          <% render :partial => 'waypoints/waypoint', :locals => { :f => wf } %>
+        <% end %>
+      <!-- end -->
+      <!-- render @route.waypoints -->
+      </tbody>
+    </table>
+    <%= button_tag "Add Waypoint", :id => 'add-waypoint-button' %>
+  <% end %>
 </div>
-
+  
 <div id='bottom-anchor'></div>
 
 <script>

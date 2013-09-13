@@ -1,8 +1,14 @@
-<tr>
+<tr data-id='<%= f.object.id %>'>
   <td>
-    <%= text_field_tag 'name', waypoint.name, data: { id: waypoint.id } %>
+    <%= f.hidden_field :id %>
+    <%= f.hidden_field :distance %>
+    <%= f.hidden_field :_destroy, :class => 'input-destroy' %>
+    <%= f.text_field :name %>
   </td>
   <td>
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div class='waypoint-distance'></div>
+  </td>
+  <td>
+    <%= button_tag "×", :type => 'button', :class => 'close' %>
   </td>
 </tr>

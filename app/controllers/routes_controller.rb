@@ -24,11 +24,27 @@ class RoutesController < ApplicationController
 
   def edit
     @route = Route.find(params[:id])
+    # render :text => @route.waypoints.inspect
   end
 
   def update
+    # waypoints = JSON.parse(params[:waypoints_field])
+    # render :text => params.inspect
+    @route = Route.find(params[:id])
+    if @route.update_attributes(route_params)
+      flash[:notice] = "Successfully updated route."
+      redirect_to edit_route_path(:id => @route.id)
+    else
+      render :action => 'edit'
+    end    
   end
 
   def destroy
   end
+
+  private
+  
+    def route_params
+      params.require(:route).permit(:name, waypoints_attributes: [ :id, :name, :distance ] )
+    end
 end

@@ -13,6 +13,7 @@ var stravaOnSteroids = {
   segCat : '',
   segGrade : 0,
   segElevGain : 0,
+  redrawTimeoutHandle : null,
 
 create: function() {
 
@@ -28,12 +29,21 @@ create: function() {
 
   stravaOnSteroids.isRoute = true;
   //stravaOnSteroids.redraw();
-  window.setTimeout(stravaOnSteroids.redrawDo, 1000); // give time for font to load... good enough
+  stravaOnSteroids.postRedraw(1000);
+  //window.setTimeout(stravaOnSteroids.redrawDo, 1000); // give time for font to load... good enough
+},
+
+postRedraw: function(time) {
+  if(stravaOnSteroids.redrawTimeoutHandle) {
+    window.clearTimeout(stravaOnSteroids.redrawTimeoutHandle);
+  }
+  stravaOnSteroids.redrawTimeoutHandle = window.setTimeout(stravaOnSteroids.redrawDo, time ? time : 50);
 },
 
 redrawDo: function() {
-    stravaOnSteroids.redraw();
-    },
+  stravaOnSteroids.redrawTimeoutHandle = null;
+  stravaOnSteroids.redraw();
+},
 
 redraw: function() {
     if (this.loading) return;
