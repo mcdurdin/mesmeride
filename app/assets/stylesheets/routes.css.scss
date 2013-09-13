@@ -2,93 +2,96 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.alert {
-  position: absolute;
-  width: 800px;
-  z-index: 10;
-}
+html.route {
 
-.toolbox {
-  border: solid 1px #333333;
-  border-radius: 6px;
-  padding: 4px;
-  background: #eeeeee;
-}
-
-html, body {
-  overflow: hidden;
-}
-
-.footbox {
-  bottom: 0;
-  position: fixed;
-  border-top: solid 1px #333333;
-  background: #eeeeee;
-}
-
-#surface-container {
-  position: absolute;
-  height: 500px;
-  width: 100%;
-  left: 0;
-  top: 41px;
-  z-index: 0;
-  overflow: auto;
-}
-
-#surface {
-  width: 100%;
-}
-
-#tools, #controls {
-  width: 200px;
-  right: 32px;
-  display: block;
-  position: fixed;
-}
-
-#tools {
-  top: 56px;
-}
-
-#waypoints {
-  width: 100%;
-  height: 160px;
-  display: block;
-  position: fixed;
-  left: 0;
-  overflow-y: auto;
-  
-  input {
-    margin-bottom: 0px;
+  .alert {
+    position: absolute;
+    width: 800px;
+    z-index: 10;
   }
-  
-  tr.disabled {
-    display: none;
+
+  .toolbox {
+    border: solid 1px #333333;
+    border-radius: 6px;
+    padding: 4px;
+    background: #eeeeee;
   }
-  
-  .waypoint-distance {
-    width: 240px;
-    margin: 0 16px;
+
+  &, body {
+    overflow: hidden;
+  }
+
+  .footbox {
+    bottom: 0;
+    position: fixed;
+    border-top: solid 1px #333333;
+    background: #eeeeee;
+  }
+
+  #surface-container {
+    position: absolute;
+    height: 500px;
+    width: 100%;
+    left: 0;
+    top: 41px;
+    z-index: 0;
+    overflow: auto;
+  }
+
+  #surface {
+    width: 100%;
+  }
+
+  #tools, #controls {
+    width: 200px;
+    right: 32px;
+    display: block;
+    position: fixed;
+  }
+
+  #tools {
+    top: 56px;
+  }
+
+  #waypoints {
+    width: 100%;
+    height: 160px;
+    display: block;
+    position: fixed;
+    left: 0;
+    overflow-y: auto;
     
-    &[disabled="disabled"] {
-      visibility: hidden;
+    input {
+      margin-bottom: 0px;
+    }
+    
+    tr.disabled {
+      display: none;
+    }
+    
+    .waypoint-distance {
+      width: 240px;
+      margin: 0 16px;
+      
+      &[disabled="disabled"] {
+        visibility: hidden;
+      }
     }
   }
-}
 
-footer {
-  display: none;
-}
+  footer {
+    display: none;
+  }
 
-.debug_dump {
-  position: fixed;
-  display: none;
-}
+  .debug_dump {
+    position: fixed;
+    display: none;
+  }
 
-#bottom-anchor {
-  bottom: 0;
-  position: fixed;
-  height: 0;
-  width: 100%
+  #bottom-anchor {
+    bottom: 0;
+    position: fixed;
+    height: 0;
+    width: 100%
+  }
 }

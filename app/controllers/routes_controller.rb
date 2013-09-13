@@ -1,4 +1,6 @@
 class RoutesController < ApplicationController
+  before_action :signed_in_user
+  
   def index
   end
 
@@ -46,5 +48,9 @@ class RoutesController < ApplicationController
   
     def route_params
       params.require(:route).permit(:name, waypoints_attributes: [ :id, :name, :distance, :elevation, :_destroy ] )
+    end
+    
+    def signed_in_user
+      redirect_to root_url, notice: "Please sign in." unless signed_in?
     end
 end

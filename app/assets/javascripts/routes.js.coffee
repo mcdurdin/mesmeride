@@ -8,6 +8,8 @@ waypointUniqueId = -1
 $ ->
 
   if ($('.toolbox').length == 0) then return
+  
+  $('html').addClass('route')
 
   #
   # Toolboxes and resizing
@@ -150,10 +152,10 @@ $ ->
   $('#save-button').click ->
     $('.edit_route').submit()
     
-#
-# Window resizing
-#
+  #
+  # Window resizing
+  #
 
-$(window).resize ->
-  $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('#waypoints').outerHeight())
-  stravaOnSteroids.postRedraw()
+  $(window).resize ->
+    $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('#waypoints').outerHeight())
+    stravaOnSteroids.postRedraw()

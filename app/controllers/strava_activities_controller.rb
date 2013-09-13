@@ -1,4 +1,5 @@
 class StravaActivitiesController < ApplicationController
+  before_action :signed_in_user
 
   include ApplicationHelper
 
@@ -29,4 +30,10 @@ class StravaActivitiesController < ApplicationController
   def new
     @strava_activity = StravaActivity.new
   end
+  
+private
+
+    def signed_in_user
+      redirect_to root_url, notice: "Please sign in." unless signed_in?
+    end
 end
