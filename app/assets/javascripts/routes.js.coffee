@@ -7,6 +7,8 @@ waypointUniqueId = -1
 
 $ ->
 
+  if ($('.toolbox').length == 0) then return
+
   #
   # Toolboxes and resizing
   #

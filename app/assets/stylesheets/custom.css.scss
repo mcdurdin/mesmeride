@@ -166,3 +166,13 @@ input, textarea, select, .uneditable-input {
 input {
   height: auto !important;
 }
+
+/* beta */
+
+.beta {
+  opacity: 0.5;
+  position: fixed;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+}
