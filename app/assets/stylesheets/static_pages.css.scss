@@ -3,15 +3,19 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 body[data-controller=static_pages] {
+  #logo-big {
+    margin-bottom: 32px;
+  }
+  
   #route-list {
     border: solid 1px #444444;
-    border-radius: 16px;
-    margin-bottom: 12px;
+    border-radius: 4px;
+    margin-bottom: 24px;
     
     ol {
       list-style: none;
       text-align: left;
-      
+      margin: 8px;
     }
   }
 }

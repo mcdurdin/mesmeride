@@ -1,8 +1,6 @@
 <% if signed_in? %>
   <div class="center hero-unit">
-    <h1>Mesmeride</h1>
-    
-    <p>Signed in.</p>
+    <h1><%= image_tag "logo-120.png", :alt => "Mesmeride", :id => 'logo-big' %></h1>
     
     <h2>Your Routes</h2>
     <div id='route-list'>
@@ -14,14 +12,14 @@
       <% end %>
     </div>
     
-    <%= link_to "Download Activity", get_activity_path %>
+    <%= link_to "Import Strava Activity", get_activity_path %>
   </div>
 <% else %>
   <div class="center hero-unit">
-    <h1>Mesmeride</h1>
+    <h1><%= image_tag "logo-120.png", :alt => "Mesmeride", :id => 'logo-big' %></h1>
 
     <h2>
-      This is the home page for Mesmeride.
+      Welcome to Mesmeride.  Sign in with Strava to continue!
     </h2>
 
     <%= link_to "Sign in", signin_path, class: "btn btn-large btn-primary" %>
