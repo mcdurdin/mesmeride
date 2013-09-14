@@ -28,7 +28,7 @@ create: function() {
   }
 
   stravaOnSteroids.isRoute = true;
-  //stravaOnSteroids.redraw();
+  stravaOnSteroids.redraw();  
   stravaOnSteroids.postRedraw(1000);
   //window.setTimeout(stravaOnSteroids.redrawDo, 1000); // give time for font to load... good enough
 },
@@ -516,5 +516,3 @@ export: function() {
 }
 
 };
-
-stravaOnSteroids.create();

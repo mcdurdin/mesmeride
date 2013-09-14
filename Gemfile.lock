@@ -14,9 +14,9 @@ GIT
 
 GIT
   remote: git://github.com/thogg4/omniauth-strava.git
-  revision: 68d210e915a20e3bd4f63c96cc22ca68d5c6d7dd
+  revision: df941676da11255ed6219f52bbfbf35cbdc31ec8
   specs:
-    omniauth-strava (0.0.5)
+    omniauth-strava (0.0.6)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
 
