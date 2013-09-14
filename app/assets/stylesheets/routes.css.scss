@@ -6,6 +6,11 @@ html { overflow: hidden; }
 body { overflow: auto; }
 
 body[data-controller=routes] {
+
+  .navbar-fixed-top .container {
+    width: auto;
+  }
+
   .alert {
     position: absolute;
     width: 800px;
@@ -35,7 +40,7 @@ body[data-controller=routes] {
     height: 500px;
     width: 100%;
     left: 0;
-    top: 41px;
+    top: 50px;
     z-index: 0;
     overflow: auto;
   }

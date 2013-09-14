@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130913224344) do
+ActiveRecord::Schema.define(version: 20130914052711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 20130913224344) do
     t.text     "streams"
     t.integer  "user_id"
   end
+
+  add_index "routes", ["user_id", "name"], name: "index_routes_on_user_id_and_name", using: :btree
 
   create_table "strava_activities", force: true do |t|
     t.integer  "activity_id"
@@ -64,5 +66,7 @@ ActiveRecord::Schema.define(version: 20130913224344) do
     t.datetime "updated_at"
     t.integer  "route_id"
   end
+
+  add_index "waypoints", ["route_id", "distance"], name: "index_waypoints_on_route_id_and_distance", using: :btree
 
 end
