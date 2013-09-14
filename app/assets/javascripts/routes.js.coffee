@@ -9,6 +9,8 @@ $ -> routeCoffee()
 
 routeCoffee = ->
 
+  $(window).unbind('resize', windowResize)
+
   if $('body').data('controller') == 'routes' && $('body').data('action') == 'edit'
 
     # alert('!')
@@ -161,7 +163,9 @@ routeCoffee = ->
     #
     # Window resizing
     #
-
-    $('body').resize ->
+    
+    windowResize = ->
       $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('#waypoints').outerHeight())
       stravaOnSteroids.postRedraw()
+
+    $(window).resize -> windowResize()
