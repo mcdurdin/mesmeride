@@ -27,9 +27,14 @@
       <%= f.label :name %>
       <%= f.text_field :name %>
       <table>
-        <tr><td>Zoom</td><td><%= f.hidden_field :zoom %><div class='size-slider' id='zoom-slider' data-value='<%= f.object.zoom %>'></div></td></tr>
-        <tr><td>X Scale</td><td><%= f.hidden_field :x_scale %><div class='size-slider' id='scale-slider' data-value='<%= f.object.x_scale %>'></div></td></tr>
-        <tr><td>Y Scale</td><td><%= f.hidden_field :y_scale %><div class='size-slider' id='y-slider' data-value='<%= f.object.y_scale %>'></div></td></tr>
+        <tr><td id='size-little'>Little</td><td><%= f.hidden_field :zoom %><div class='size-slider' id='zoom-slider' data-value='<%= f.object.zoom %>'></div></td><td id='size-big'>Big</td></tr>
+        <tr><td id-'x-quick'>Quick spin</td><td><%= f.hidden_field :x_scale %><div class='size-slider' id='scale-slider' data-value='<%= f.object.x_scale %>'></div></td><td id='x-epic'>Epic</td></tr>
+        <% if rand <= 0.5
+          r = ['Molehills','Mountains'] 
+        else 
+          r = ['Netherlands','Switzerland']
+        end %>
+        <tr><td id='y-molehills'><%= r[0] %></td><td><%= f.hidden_field :y_scale %><div class='size-slider' id='y-slider' data-value='<%= f.object.y_scale %>'></div></td><td id='y-mountains'><%= r[1] %></td></tr>
       </table>
     </div><div class='footdiv' id='controls'>
       <h3>Controls</h3>
