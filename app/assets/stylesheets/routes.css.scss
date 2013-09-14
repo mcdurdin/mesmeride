@@ -2,8 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-html { overflow: hidden; }
-body { overflow: auto; }
+html { overflow-y: auto; }
+// body { overflow: auto; }
 
 body[data-controller=routes] {
 

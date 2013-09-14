@@ -1,7 +1,31 @@
-<% provide(:title, 'About Us') %>
-<h1>About Us</h1>
+<% provide(:title, 'About Mesmeride') %>
+<h1>About Mesmeride</h1>
 <p>
-   Mesmeride is an application to create beautiful maps and elevation 
-   profiles for Strava rides, routes and segments. These maps and 
-   elevation profiles can be saved as images to print or share on the web. 
- </p>
+   Mesmeride is an application to create beautiful elevation 
+   profiles for Strava rides (and later, maps, and routes and segments). 
+   These maps and elevation profiles can be saved as images to print or 
+   share on the web. 
+</p>
+<p>
+  The initial release replicates most of the <a href='http://marc.durdin.net/2013/07/giro-your-strava-updated-to-give-le-tour-treatment-to-the-climbs/' target='_blank'>Giro-Your-Strava bookmarklet</a> functionality, with a little bit of extra control.  
+  I hope to add other styles and controls with the base that this project provides.
+</p>
+<p>
+  This project was whipped up in Ruby on Rails over a few days in my first real holiday in years (between bike rides) as my way of
+  learning some new languages, frameworks and set of tools -- <a href='http://rubyonrails.org/' target='_blank'>Ruby on Rails</a>, 
+  <a target='_blank' href='http://coffeescript.org/'>CoffeeScript</a>, <a  target='_blank' href='http://sass-lang.com/'>Sass</a>,
+  <a target='_blank' href='http://heroku.com'>Heroku</a> and more.  
+</p>
+<p>
+  At the end of this experience, I can definitely say that coding in this new world is a wonderful way to detox after PHP, although I ended up 
+  skipping most of my TDD due to (a) laziness, and (b) a desire to get something online before I ran out of holidays.  The only time
+  I found myself grimacing was when I encountered <a href='http://staal.io/blog/2013/01/18/dangers-of-turbolinks/' target='_blank'>TurboLinks</a>.
+  These really do break quite a few "standard" things and are a bit of a quagmire for the unwary.
+</p>
+<p>
+  The source is all available on <a href='https://github.com/mcdurdin/mesmeride'>Github</a> but you won't be able to work with it
+  without a Strava V3 API key.  That said, contributions will be gratefully reviewed and maybe even accepted!  Especially if they
+  relate to a hack job I've done in not learning these tools properly.
+</p>
+<%= image_tag 'about_image.jpg', :title => "I'm in the Strava gear; Hell of the South race, B grade, 2013" %>
+<p><a href='http://www.tasmanianphotos.ifp3.com/' target='_blank'>Photo courtesy of Clive Roper</a></p>
