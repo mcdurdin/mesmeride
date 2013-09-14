@@ -13,7 +13,7 @@ Mesmeride::Application.routes.draw do
   #match '/routes', :to => 'routes#index', via: 'get'
   #match '/routes/new', :to => 'routes#new', via: 'get'
   #match '/routes/:id', :to => 'routes#show', via: 'get'
-  #match '/routes/:id/edit', :to => 'routes#edit', via: 'get'
+  match '/routes/:id/image_save', :to => 'routes#image_save', via: 'post'
   
   match '/get_activity',  to: 'strava_activities#new', via: 'get'
   

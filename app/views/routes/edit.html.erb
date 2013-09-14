@@ -2,38 +2,42 @@
   <canvas id='surface'></canvas>
 </div>
 
-<div class='toolbox' id='tools'>
-  Route Name: <%= @route.name %>
-  # tools: rotate, zoom, template
-  <div id='zoom-slider'></div>
-</div>
-<div class='toolbox' id='controls'>
-  <%= button_tag "Export", :id => 'export-button' %>
-  <%= button_tag "Save Route", :id => 'save-button' %>
-  # controls: export-png, canvas-size, 
-</div>
-
-<div class='footbox' id='waypoints'>
+<div class='footbox'>
   <%= form_for @route do |f| %>
-    <table>
-    <thead>
-      <tr><th>Name</th><th>Distance</th></tr>
-    </thead>
-    <tbody>
-       <!--@route.waypoints.each do |waypoint|  -->
-        <%= f.fields_for :waypoints do |wf| %>
-          <% render :partial => 'waypoint', :locals => { :f => wf } %>
-        <% end %>
-      <!-- end -->
-      <!-- render @route.waypoints -->
-      </tbody>
-    </table>
-    
-    <%= add_child_link "Add Waypoint", :waypoints ,'btn btn-small' %></p>
-    <%= new_child_fields_template f, :waypoints %>
+    <div class='footdiv' id='waypoints'>
+      <h3>Waypoints</h3>
+      <table>
+      <thead>
+        <tr><th>Name</th><th>Distance</th></tr>
+      </thead>
+      <tbody>
+         <!--@route.waypoints.each do |waypoint|  -->
+          <%= f.fields_for :waypoints do |wf| %>
+            <% render :partial => 'waypoint', :locals => { :f => wf } %>
+          <% end %>
+        <!-- end -->
+        <!-- render @route.waypoints -->
+        </tbody>
+      </table>
+      
+      <%= add_child_link "Add Waypoint", :waypoints ,'btn btn-small' %></p>
+      <%= new_child_fields_template f, :waypoints %>
+    </div><div class='footdiv' id='tools'>
+      <h3>Tools [template,rotate,render-specific,etc]</h3>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+      <table>
+        <tr><td>Zoom</td><td><%= f.hidden_field :zoom %><div class='size-slider' id='zoom-slider' data-value='<%= f.object.zoom %>'></div></td></tr>
+        <tr><td>X Scale</td><td><%= f.hidden_field :x_scale %><div class='size-slider' id='scale-slider' data-value='<%= f.object.x_scale %>'></div></td></tr>
+        <tr><td>Y Scale</td><td><%= f.hidden_field :y_scale %><div class='size-slider' id='y-slider' data-value='<%= f.object.y_scale %>'></div></td></tr>
+      </table>
+    </div><div class='footdiv' id='controls'>
+      <h3>Controls</h3>
+      <div><%= button_tag "Export to PNG", :id => 'export-button', :type => 'button' %></div>
+      <div><%= button_tag "Save Route", :id => 'save-button', :type => 'button' %></div>
+    </div>
   <% end %>
-</div>
-  
+</div>  
 <div id='bottom-anchor'></div>
 
 <script>
@@ -45,6 +49,10 @@
   <table>
     <%= yield :jstemplates %>
   </table>
+  <%= form_tag 'image_save', :id => 'image_save' do %>
+    <%= text_area_tag :data %>
+    <%= text_field_tag :name %>
+  <% end %>
 </div>
 
 <!--  javascript_include_tag "giro_renderer", "data-turbolinks-track" => true  -->

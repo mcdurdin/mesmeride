@@ -8,7 +8,7 @@ class RoutesController < ApplicationController
   end
 
   def new
-    @route = Route.new :source => "StravaActivity", :source_id => params[:activity_id], :user_id => current_user.id
+    @route = Route.new :source => "StravaActivity", :source_id => params[:activity_id], :user_id => current_user.id, :zoom => 25, :x_scale => 25, :y_scale => 25
   end
   
   def create
@@ -26,6 +26,7 @@ class RoutesController < ApplicationController
 
   def edit
     @route = Route.find(params[:id])
+    #@route.waypoints.
     # render :text => @route.waypoints.inspect
   end
 
@@ -43,11 +44,24 @@ class RoutesController < ApplicationController
 
   def destroy
   end
+  
+  def image_save
+    # data:image/png;base64,
+    data = params[:data]
+    data = params[:data].match(/^data\:(.+?);base64,(.+)$/)
+    
+    name = params[:name].gsub(/[^a-zA-Z0-9-_. ]/, '') + '.png'
+    
+    response.headers['Content-Type'] = data[1]
+    response.headers['Content-Disposition'] = "attachment; filename=\"#{name}\""
+    
+    render :text => Base64.decode64(data[2])
+  end
 
   private
   
     def route_params
-      params.require(:route).permit(:name, waypoints_attributes: [ :id, :name, :distance, :elevation, :_destroy ] )
+      params.require(:route).permit(:name, :x_scale, :y_scale, :zoom, waypoints_attributes: [ :id, :name, :distance, :elevation, :_destroy ] )
     end
     
     def signed_in_user

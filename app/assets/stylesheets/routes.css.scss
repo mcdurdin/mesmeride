@@ -30,9 +30,31 @@ body[data-controller=routes] {
 
   .footbox {
     bottom: 0;
+    left: 0;
+    width: 100%;
     position: fixed;
     border-top: solid 1px #333333;
     background: #eeeeee;
+    
+    & > form {
+      margin-bottom: 0;
+    }
+
+    h3 {
+        background: #333333;
+        color: #FFFFFF;
+        font-size: 14px;
+        margin: 0 -8px 6px;
+        padding: 3px 6px;
+    }    
+    
+    div.footdiv {
+      display: inline-block;
+      height: 160px;
+      padding: 0px 8px;
+      vertical-align: top;
+      border-right: solid 1px #333333;
+    }
   }
 
   #surface-container {
@@ -43,29 +65,10 @@ body[data-controller=routes] {
     top: 50px;
     z-index: 0;
     overflow: auto;
+    text-align: center;
   }
-
-  #surface {
-    width: 100%;
-  }
-
-  #tools, #controls {
-    width: 200px;
-    right: 32px;
-    display: block;
-    position: fixed;
-  }
-
-  #tools {
-    top: 56px;
-  }
-
+  
   #waypoints {
-    width: 100%;
-    height: 160px;
-    display: block;
-    position: fixed;
-    left: 0;
     overflow-y: auto;
     
     input {
@@ -85,6 +88,12 @@ body[data-controller=routes] {
       }
     }
   }
+  
+  #tools {
+    .size-slider {
+      width: 120px;
+    }
+  }
 
   footer {
     display: none;
@@ -100,5 +109,15 @@ body[data-controller=routes] {
     position: fixed;
     height: 0;
     width: 100%
+  }
+  
+  #jstemplates {
+    position: fixed;
+    left: -10px;
+    top: -10px;
+    width: 0px;
+    height: 0px;
+    visibility: hidden;
+    overflow: hidden;
   }
 }

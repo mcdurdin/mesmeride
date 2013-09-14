@@ -16,6 +16,9 @@ routeCoffee = ->
     # alert('!')
     window.stravaOnSteroids.create()
     
+    stravaOnSteroids.zoom = $('#zoom-slider').data('value') / 25
+    stravaOnSteroids.scale = $('#scale-slider').data('value') / 25
+    stravaOnSteroids.yScale = $('#y-slider').data('value') / 25
     
     # if ($('.toolbox').length == 0) then return
     
@@ -26,12 +29,31 @@ routeCoffee = ->
     $( ".toolbox,.debug_dump" ).draggable();
 
     $( "#zoom-slider" ).slider
-      orientation: 'vertical', 
+      value: $('#zoom-slider').data('value')
+      min: 1
+      max: 100
       change: (event,ui) -> 
-        $('#surface').css('width', ui.value*10 + '%').css('height', ui.value*10 + '%')
+        stravaOnSteroids.zoom = ui.value / 25
+        stravaOnSteroids.postRedraw()
 
-    $( "#controls" ).offset({top: $('#tools').offset().top + $('#tools').outerHeight() + 4, left: $('#controls').offset().left});
-    $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('#waypoints').outerHeight());
+    $( "#scale-slider" ).slider
+      value: $('#scale-slider').data('value')
+      min: 1
+      max: 100
+      change: (event,ui) -> 
+        stravaOnSteroids.scale = ui.value / 25
+        stravaOnSteroids.postRedraw()
+
+    $( "#y-slider" ).slider
+      value: $('#y-slider').data('value')
+      min: 1
+      max: 100
+      change: (event,ui) -> 
+        stravaOnSteroids.yScale = ui.value / 25
+        stravaOnSteroids.postRedraw()
+
+        # $( "#controls" ).offset({top: $('#tools').offset().top + $('#tools').outerHeight() + 4, left: $('#controls').offset().left});
+    $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('.footbox').outerHeight());
 
     #
     # Waypoint manipulation
@@ -45,7 +67,7 @@ routeCoffee = ->
       stravaOnSteroids.postRedraw();
       
     waypointId = (elem) ->
-      $(elem).parents('#waypoints tr').data('id')
+      $(elem).parents('#waypoints table tr').data('id')
       
     getWaypoint = (elem) ->
       id = waypointId(elem)
@@ -158,6 +180,9 @@ routeCoffee = ->
       stravaOnSteroids.export()
       
     $('#save-button').click ->
+      $('#route_zoom').val($('#zoom-slider').slider('value'))
+      $('#route_x_scale').val($('#scale-slider').slider('value'))
+      $('#route_y_scale').val($('#y-slider').slider('value'))
       $('.edit_route').submit()
       
     #
@@ -165,7 +190,7 @@ routeCoffee = ->
     #
     
     windowResize = ->
-      $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('#waypoints').outerHeight())
+      $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('.footbox').outerHeight())
       stravaOnSteroids.postRedraw()
 
     $(window).resize -> windowResize()

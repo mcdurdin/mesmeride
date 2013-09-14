@@ -6,7 +6,7 @@ class Route < ActiveRecord::Base
   def self.import_from_activity(activity_id, user_id)
     activity = StravaActivity.find_by_activity_id(activity_id)
     
-    @route = Route.create(:name => activity.name, :source => "StravaActivity", :source_id => activity_id, :user_id => user_id)
+    @route = Route.create(:name => activity.name, :source => "StravaActivity", :source_id => activity_id, :user_id => user_id, :zoom => 25, :x_scale => 25, :y_scale => 25)
 
     start_date = DateTime.iso8601(activity.data["activity"]["start_date"]).to_i
 
