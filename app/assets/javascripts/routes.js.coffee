@@ -4,8 +4,18 @@
 
 modified = false
 
-$(document).on "page:change", -> routeCoffee() # for now we won't use turbolinks.  Too fragile?
+$(document).on "page:change", -> 
+  routeCoffee()
+
+  if window._gaq?
+    _gaq.push ['_trackPageview']
+  else if window.pageTracker?
+    pageTracker._trackPageview()
+
+    
 $ -> routeCoffee()
+
+
 
 routeCoffee = ->
 
