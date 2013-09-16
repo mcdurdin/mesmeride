@@ -12,23 +12,45 @@ $(document).on "page:change", ->
   else if window.pageTracker?
     pageTracker._trackPageview()
 
-    
 $ -> routeCoffee()
-
-
 
 routeCoffee = ->
 
+  renderer = null
+
+  getRenderer = ->
+    if $('#route_renderer').val() == 'Giro' 
+      window.mesmeride.giroRenderer 
+    else
+      window.mesmeride.h10KBannerRenderer
+    
+  updateRenderer = ->
+    renderer = getRenderer()
+    
+    $('.renderer-controls').removeClass('visible')
+    $("##{renderer.name}-renderer-controls").addClass('visible')
+    
+    renderer.create()
+    
+    renderer.zoom = $('#zoom-slider').data('value') / 25
+    renderer.scale = $('#scale-slider').data('value') / 25
+    renderer.yScale = $('#y-slider').data('value') / 25
+
+    if(window.renderer_options['color']) 
+      $('#h10k_color').val(window.renderer_options['color'])
+      renderer.color = window.renderer_options['color']
+      renderer.postRedraw()
+    
+    renderer.postRedraw(1000);
+  
   $(window).unbind('resize', windowResize)
 
   if $('body').data('controller') == 'routes' && $('body').data('action') == 'edit'
 
     # alert('!')
-    window.stravaOnSteroids.create()
     
-    stravaOnSteroids.zoom = $('#zoom-slider').data('value') / 25
-    stravaOnSteroids.scale = $('#scale-slider').data('value') / 25
-    stravaOnSteroids.yScale = $('#y-slider').data('value') / 25
+    updateRenderer()
+    
     
     # if ($('.toolbox').length == 0) then return
     
@@ -43,24 +65,24 @@ routeCoffee = ->
       min: 1
       max: 100
       change: (event,ui) -> 
-        stravaOnSteroids.zoom = ui.value / 25
-        stravaOnSteroids.postRedraw()
+        renderer.zoom = ui.value / 25
+        renderer.postRedraw()
 
     $( "#scale-slider" ).slider
       value: $('#scale-slider').data('value')
       min: 1
       max: 100
       change: (event,ui) -> 
-        stravaOnSteroids.scale = ui.value / 25
-        stravaOnSteroids.postRedraw()
+        renderer.scale = ui.value / 25
+        renderer.postRedraw()
 
     $( "#y-slider" ).slider
       value: $('#y-slider').data('value')
       min: 1
       max: 100
       change: (event,ui) -> 
-        stravaOnSteroids.yScale = ui.value / 25
-        stravaOnSteroids.postRedraw()
+        renderer.yScale = ui.value / 25
+        renderer.postRedraw()
 
         # $( "#controls" ).offset({top: $('#tools').offset().top + $('#tools').outerHeight() + 4, left: $('#controls').offset().left});
     $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('.footbox').outerHeight());
@@ -74,7 +96,7 @@ routeCoffee = ->
     waypointChange = (e) ->  
       for w in waypoints 
         w.name = $(e).val() if w.id == waypointId(e)
-      stravaOnSteroids.postRedraw();
+      renderer.postRedraw();
       
     waypointId = (elem) ->
       $(elem).parents('#waypoints table tr').data('id')
@@ -106,14 +128,14 @@ routeCoffee = ->
             break
         $(this).parent().parent().addClass('disabled')
         $(this).parent().parent().find('.input-destroy').val(1)
-        stravaOnSteroids.postRedraw()
+        renderer.postRedraw()
         
       $( "#waypoints table tr:not(tr.bound) .waypoint-distance" ).each ->
         refreshWaypoint = (e) ->
           waypoint = getWaypoint(e)
           waypoint.distance = $(e).slider('value')
           waypoint.elevation = getElevationByDistance(waypoint.distance)
-          stravaOnSteroids.postRedraw()
+          renderer.postRedraw()
           $('.ui-slider-handle',e).tooltip('show')
           
           $(e).parent().parent().find('input[type=hidden]').filter ->
@@ -180,16 +202,22 @@ routeCoffee = ->
         name: ''
       window.waypoints.push(waypoint)
       attachWaypointEvents()
-      stravaOnSteroids.postRedraw()
+      renderer.postRedraw()
       
     #
     # Save and Export
     #
 
     $('#export-button').click ->
-      stravaOnSteroids.export()
+      c = document.getElementById('surface')
+      img = c.toDataURL('image/png')
+      $('#image_save textarea#data').val(img)
+      $('#image_save input#name').val($('#route_name').val())
+      $('#image_save').submit()
       
     $('#save-button').click ->
+      renderer_options = { color : $('#h10k_color').val() };
+      $('#route_renderer_options').val(JSON.stringify(renderer_options))
       $('#route_zoom').val($('#zoom-slider').slider('value'))
       $('#route_x_scale').val($('#scale-slider').slider('value'))
       $('#route_y_scale').val($('#y-slider').slider('value'))
@@ -201,6 +229,20 @@ routeCoffee = ->
     
     windowResize = ->
       $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('.footbox').outerHeight())
-      stravaOnSteroids.postRedraw()
+      renderer.postRedraw()
 
     $(window).resize -> windowResize()
+
+    #
+    # Renderer selection
+    #
+    
+    $('#route_renderer').change ->
+      updateRenderer()
+      renderer.postRedraw()
+      
+    $('#h10k_color').change ->
+      renderer.color = $(this).val()
+      renderer.postRedraw()
+      
+      

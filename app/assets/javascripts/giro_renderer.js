@@ -1,6 +1,8 @@
 window.mesmeride = window.mesmeride || {}
 
 window.stravaOnSteroids = window.mesmeride.giroRenderer = {
+  name : 'giro',
+  
   lengthMultiplierLarge : 0.001, 
 
   baseScale : 0,
@@ -28,7 +30,7 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
     stravaOnSteroids.baseVerticalMultiplier = 0;
     
     //stravaOnSteroids.redraw();  
-    stravaOnSteroids.postRedraw(1000);  // give time for font to load... good enough for now
+    // stravaOnSteroids.postRedraw(1000);  // give time for font to load... good enough for now
   },
 
   postRedraw: function(time) {
@@ -482,13 +484,5 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
       context.fillText('0.0', -ysubbase-20-context.measureText('0.0').width, sections[0].startX+5);
     }
   },
-
-  export: function() {
-    var c = document.getElementById('surface')
-    var img = c.toDataURL('image/png')
-    $('#image_save textarea#data').val(img)
-    $('#image_save input#name').val($('#route_name').val())
-    $('#image_save').submit() //    location.href = img.replace('image/png','image/octet-stream');
-  }
 
 };

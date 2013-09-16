@@ -61,7 +61,10 @@ class RoutesController < ApplicationController
   private
   
     def route_params
-      params.require(:route).permit(:name, :x_scale, :y_scale, :zoom, waypoints_attributes: [ :id, :name, :distance, :elevation, :_destroy ] )
+      params.require(:route).permit(
+        :name, :x_scale, :y_scale, :zoom, :renderer, :renderer_options, 
+        waypoints_attributes: [ :id, :name, :distance, :elevation, :_destroy ]
+      )
     end
     
     def signed_in_user

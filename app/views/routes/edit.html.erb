@@ -22,25 +22,8 @@
       
       <%= add_child_link "Add Waypoint", :waypoints ,'btn btn-small' %></p>
       <%= new_child_fields_template f, :waypoints %>
-    </div><div class='footdiv' id='tools'>
-      <h3>Tools [template,rotate,render-specific,etc]</h3>
-      <%= f.label :name %>
-      <%= f.text_field :name %>
-      <table>
-        <tr><td id='size-little'>Little</td><td><%= f.hidden_field :zoom %><div class='size-slider' id='zoom-slider' data-value='<%= f.object.zoom %>'></div></td><td id='size-big'>Big</td></tr>
-        <tr><td id-'x-quick'>Quick spin</td><td><%= f.hidden_field :x_scale %><div class='size-slider' id='scale-slider' data-value='<%= f.object.x_scale %>'></div></td><td id='x-epic'>Epic</td></tr>
-        <% if rand <= 0.5
-          r = ['Molehills','Mountains'] 
-        else 
-          r = ['Netherlands','Switzerland']
-        end %>
-        <tr><td id='y-molehills'><%= r[0] %></td><td><%= f.hidden_field :y_scale %><div class='size-slider' id='y-slider' data-value='<%= f.object.y_scale %>'></div></td><td id='y-mountains'><%= r[1] %></td></tr>
-      </table>
-    </div><div class='footdiv' id='controls'>
-      <h3>Controls</h3>
-      <div><%= button_tag "Export to PNG", :id => 'export-button', :type => 'button' %></div>
-      <div><%= button_tag "Save Route", :id => 'save-button', :type => 'button' %></div>
     </div>
+    <%= render partial: 'tools', :locals => { :f => f } %>
   <% end %>
 </div>  
 <div id='bottom-anchor'></div>
@@ -48,6 +31,12 @@
 <script>
   var streams = <%= raw @route.streams %>;
   var waypoints = <%= raw @route.waypoints.to_json %>;
+  var renderer_options = JSON.parse('<%= 
+    if @route.renderer_options.to_s == ''
+      "[]"
+    else 
+      raw @route.renderer_options
+    end %>');
 </script>
 
 <div id='jstemplates'>

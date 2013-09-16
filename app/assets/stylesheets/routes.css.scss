@@ -54,6 +54,14 @@ body[data-controller=routes] {
       padding: 0px 8px;
       vertical-align: top;
       border-right: solid 1px #333333;
+    
+      &.renderer-controls {
+        display: none;
+    
+        &.visible {
+          display: inline-block;
+        }
+      }
     }
   }
 
