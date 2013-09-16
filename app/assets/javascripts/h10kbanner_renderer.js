@@ -278,11 +278,19 @@ window.mesmeride.h10KBannerRenderer = {
         
         var x1 = s.startX, y1 = s.startY, x2 = s.endX, y2 = s.endY;
         
+        if(y2 == y1) continue;
+        
         context.moveTo(x1, y1);     // x1 y1  x2 y2 -->   (y2-y1)/(x2-x1) * (x2-x1+2) + y2
         context.lineTo(x1, ysubbase);
-        context.lineTo(x2 + 2, ysubbase);
-        context.lineTo(x2 + 2, (y2-y1)/(x2-x1) * (x2-x1+2) + y1);
+        context.lineTo(x2, ysubbase);
+        context.lineTo(x2, y2); //(y2-y1)/(x2-x1) * (x2-x1+2) + y1);
         context.fill();
+
+        context.moveTo(x2-1, y2);
+        context.lineTo(x2-1, ysubbase); 
+        context.lineTo(x2+1, ysubbase);
+        context.lineTo(x2+1, y2);
+        context.fill(); 
       }
       
       /* Draw foreground line of gradient */
