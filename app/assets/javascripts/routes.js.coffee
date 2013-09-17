@@ -21,6 +21,8 @@ routeCoffee = ->
   getRenderer = ->
     if $('#route_renderer').val() == 'Giro' 
       window.mesmeride.giroRenderer 
+    else if $('#route_renderer').val() == 'Le Tour'
+      window.mesmeride.letourRenderer
     else
       window.mesmeride.h10KBannerRenderer
     

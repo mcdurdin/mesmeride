@@ -28,9 +28,6 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
 
     stravaOnSteroids.baseScale = 0;   // force a recalc of the basic scale
     stravaOnSteroids.baseVerticalMultiplier = 0;
-    
-    //stravaOnSteroids.redraw();  
-    // stravaOnSteroids.postRedraw(1000);  // give time for font to load... good enough for now
   },
 
   postRedraw: function(time) {
