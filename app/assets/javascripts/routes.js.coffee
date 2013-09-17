@@ -32,9 +32,9 @@ routeCoffee = ->
     
     renderer.create()
     
-    renderer.zoom = $('#zoom-slider').data('value') / 25
-    renderer.scale = $('#scale-slider').data('value') / 25
-    renderer.yScale = $('#y-slider').data('value') / 25
+    renderer.zoom = $('#zoom-slider').slider('value') / 25
+    renderer.scale = $('#scale-slider').slider('value') / 25
+    renderer.yScale = $('#y-slider').slider('value') / 25
 
     if(window.renderer_options['color']) 
       $('#h10k_color').val(window.renderer_options['color'])
@@ -47,13 +47,6 @@ routeCoffee = ->
 
   if $('body').data('controller') == 'routes' && $('body').data('action') == 'edit'
 
-    # alert('!')
-    
-    updateRenderer()
-    
-    
-    # if ($('.toolbox').length == 0) then return
-    
     #
     # Toolboxes and resizing
     #
@@ -84,7 +77,8 @@ routeCoffee = ->
         renderer.yScale = ui.value / 25
         renderer.postRedraw()
 
-        # $( "#controls" ).offset({top: $('#tools').offset().top + $('#tools').outerHeight() + 4, left: $('#controls').offset().left});
+    updateRenderer()
+   
     $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('.footbox').outerHeight());
 
     #
@@ -244,5 +238,8 @@ routeCoffee = ->
     $('#h10k_color').change ->
       renderer.color = $(this).val()
       renderer.postRedraw()
-      
-      
+     
+    window.mesmeride.afterRender = ->
+      # $('#surface').on('resize', -> 
+      $('#dimensions').text($('#surface').outerWidth() + ' x ' + $('#surface').outerHeight())
+    

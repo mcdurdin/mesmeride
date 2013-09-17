@@ -1,7 +1,20 @@
 <h1>Import Strava Activity</h1>
 
-    <%= form_for(@strava_activity) do |f| %>
-      <%= f.label :activity_id %>
-      <%= f.text_field :activity_id %>
-      <%= f.submit "Download Activity", class: "btn btn-primary" %>
-    <% end %>
+<h3>Your recent activities</h3>
+
+<table id='recent-activities' class='table table-bordered table-striped table-hover table-condensed'>
+  <thead>
+    <tr><th>Activity</th><th>Distance</th><th>Elevation Gain</th><th></th></tr>
+  </thead>
+  <tbody>
+    <%= render :partial => 'activity', :collection => @activities %>
+  </tbody>
+</table>
+
+<h3>Import specific activity</h3>
+
+<%= form_for(@strava_activity) do |f| %>
+  <%= f.label :activity_id, "Strava Activity ID or URL" %>
+  <%= f.text_field :activity_id, :placeholder => 'Activity ID or URL' %>
+  <%= f.submit "Download Activity", class: "btn btn-primary" %>
+<% end %>

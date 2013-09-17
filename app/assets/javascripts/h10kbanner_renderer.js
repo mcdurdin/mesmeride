@@ -117,6 +117,7 @@ window.mesmeride.h10KBannerRenderer = {
 
     if (f > 0 && xStep > 0 && yStep > 0) {
       this.drawGiro(data.data, f, vertMultiplier, xStep, yStep);
+      if(window.mesmeride.afterRender) window.mesmeride.afterRender(this);
     }
   },
 

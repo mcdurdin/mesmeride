@@ -121,6 +121,8 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
 
     if (f > 0 && xStep > 0 && yStep > 0 && angle > 0) {
       this.drawGiro(data.data, f, vertMultiplier, xStep, yStep, angle);
+      
+      if(window.mesmeride.afterRender) window.mesmeride.afterRender(this);
     }
   },
 

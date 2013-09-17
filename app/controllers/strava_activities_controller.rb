@@ -8,7 +8,9 @@ class StravaActivitiesController < ApplicationController
     require 'json'
     
     strava_activity = params[:strava_activity]
-    activity_id = strava_activity[:activity_id]
+    activity_id_match = /^http(s)?\:\/\/www\.strava\.com\/activities\/(\d+)$/.match(strava_activity[:activity_id])
+
+    activity_id = activity_id_match.nil? ? strava_activity[:activity_id] : activity_id_match[2]
     
     @strava_activity = StravaActivity.find_by_activity_id(activity_id)
     if @strava_activity.nil?
@@ -29,6 +31,7 @@ class StravaActivitiesController < ApplicationController
 
   def new
     @strava_activity = StravaActivity.new
+    @activities = JSON.parse(get_strava_data('activities'))
   end
   
 private
