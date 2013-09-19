@@ -49,6 +49,9 @@ routeCoffee = ->
   
   $(window).unbind('resize', windowResize)
 
+  if $('body').data('controller') == 'routes' && $('body').data('action') == 'new'
+    $('#new_route').submit()
+
   if $('body').data('controller') == 'routes' && $('body').data('action') == 'edit'
     
     routeDistance = window.streams.distance[window.streams.distance.length-1]

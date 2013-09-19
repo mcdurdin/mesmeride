@@ -1,5 +1,8 @@
+<div style='display:none'>
 <%= form_for @route do |f| %>
 <%=   f.hidden_field(:source) %>
 <%=   f.hidden_field(:source_id) %>
 <%=   f.submit("Import Route") %>
 <% end %>
+</div>
+<h3>Please wait while importing route...</h3>

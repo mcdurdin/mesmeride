@@ -32,7 +32,7 @@ class StravaActivitiesController < ApplicationController
       activity_id = effort_id_match[3]
       effort_id = effort_id_match[4]
     else # !activity_id_match.nil?
-      activity_id = activity_id_match.nil? ? strava_activity[:activity_id] : activity_id_match[3]
+      activity_id = activity_id_match[-1]
     end
     
     import_strava_activity(activity_id)

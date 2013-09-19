@@ -16,7 +16,7 @@
 <%= form_for(@strava_activity) do |f| %>
   <%= f.label :activity_id, "Strava Activity, Segment or Effort URL" %>
   <%= f.text_field :activity_id, :placeholder => 'Activity ID, http://www.strava.com/activities....' %>
-  <%= f.submit "Download Activity", class: "btn btn-primary" %>
+  <%= f.submit "Import Activity", class: "btn btn-primary" %>
 <% end %>
 
 <p>You can enter:</p>
