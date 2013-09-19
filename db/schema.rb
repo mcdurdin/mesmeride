@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130916113448) do
+ActiveRecord::Schema.define(version: 20130918081935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 20130916113448) do
     t.integer  "y_scale"
     t.string   "renderer"
     t.text     "renderer_options"
+    t.integer  "crop_start_distance"
+    t.integer  "crop_stop_distance"
   end
 
   add_index "routes", ["user_id", "name"], name: "index_routes_on_user_id_and_name", using: :btree

@@ -15,6 +15,8 @@ window.mesmeride.letourRenderer = {
   scale : 1,  // will be calculated to window size on first load
   zoom : 1, 
   yScale : 1,
+  cropStart : 0,
+  cropStop : 0,
 
   segDistance : 1,
   segCat : '',
@@ -60,18 +62,24 @@ window.mesmeride.letourRenderer = {
 
     /* Build data for rendering */
 
-    var data = {data: window.streams};
+    var data = {data: jQuery.extend(true, {}, window.streams)};
+    
+    var cropStart = window.mesmeride.letourRenderer.cropStart, cropStop = window.mesmeride.letourRenderer.cropStop;
+    if(cropStop == 0) cropStop = data.data.distance[data.data.distance.length - 1];
 
     data.data.details = [];
     var segs = waypoints;
     for(var i = 0; i < segs.length; i++) {
-      var seg = {
-        endX: segs[i].distance, 
-        endY: segs[i].elevation, 
-        name: segs[i].name, 
-        isClimb: true
-      };
-      data.data.details.push(seg);
+      if(segs[i].distance >= window.mesmeride.letourRenderer.cropStart &&
+         segs[i].distance < window.mesmeride.letourRenderer.cropStop) {
+        var seg = {
+          endX: segs[i].distance - window.mesmeride.letourRenderer.cropStart, 
+          endY: segs[i].elevation, 
+          name: segs[i].name, 
+          isClimb: true
+        };
+        data.data.details.push(seg);
+      }
     }
 
     data.data.minHeight = 10000;
@@ -79,17 +87,31 @@ window.mesmeride.letourRenderer = {
 
     window.mesmeride.letourRenderer.data = data;
     
-    var i;
+    var i, startI = 0;
     
     /* calculate max and min altitude in metres */
     
     for (i = 0; i < data.data.altitude.length; i++) {
-        if (data.data.altitude[i] < data.data.minHeight) {
-            data.data.minHeight = data.data.altitude[i];
-        }
-        if (data.data.altitude[i] > data.data.maxHeight) {
-            data.data.maxHeight = data.data.altitude[i];
-        }
+      if (data.data.altitude[i] < data.data.minHeight) {
+          data.data.minHeight = data.data.altitude[i];
+      }
+      if (data.data.altitude[i] > data.data.maxHeight) {
+          data.data.maxHeight = data.data.altitude[i];
+      }
+      if (data.data.distance[i] < cropStart) {
+        startI = i + 1;
+      }
+      if (data.data.distance[i] > cropStop) {
+        data.data.distance = data.data.distance.slice(0, i);
+        data.data.altitude = data.data.altitude.slice(0, i);
+        break;
+      }
+      data.data.distance[i] -= cropStart;
+    }
+    
+    if(startI > 0) {
+      data.data.distance = data.data.distance.slice(startI);
+      data.data.altitude = data.data.altitude.slice(startI);
     }
 	
     var overallGrad = (data.data.maxHeight - data.data.minHeight); /* / data.data.distance[data.data.distance.length-1];  */

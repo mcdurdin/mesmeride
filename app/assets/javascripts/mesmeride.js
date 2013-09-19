@@ -1,0 +1,2 @@
+window.mesmeride = window.mesmeride || {}
+

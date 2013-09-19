@@ -54,6 +54,23 @@ body[data-controller=routes] {
       padding: 0px 8px;
       vertical-align: top;
       border-right: solid 1px #333333;
+      
+      input,select {
+        width: auto;
+      }
+      
+      select {
+        padding-top: 3px;
+        height: 27px;
+        line-height: 27px;
+        margin-bottom: 10px;
+      }
+      
+      label {
+        display: inline-block;
+        vertical-align: top;
+        padding-top: 5px;
+      }
     
       &.renderer-controls {
         display: none;
@@ -81,6 +98,7 @@ body[data-controller=routes] {
     
     input {
       margin-bottom: 0px;
+      width: 100%;
     }
     
     tr.disabled {
@@ -100,6 +118,7 @@ body[data-controller=routes] {
   #tools {
     .size-slider {
       width: 120px;
+      margin: 0 8px;
     }
   }
 

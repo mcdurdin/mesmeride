@@ -8,20 +8,29 @@ class RoutesController < ApplicationController
   end
 
   def new
-    @route = Route.new :source => "StravaActivity", :source_id => params[:activity_id], :user_id => current_user.id, :zoom => 25, :x_scale => 25, :y_scale => 25
+    if params[:effort_id].nil?
+      @route = Route.new :source => "StravaActivity", :source_id => params[:activity_id], :user_id => current_user.id, :zoom => 25, :x_scale => 25, :y_scale => 25
+    else
+      @route = Route.new :source => "StravaEffort[#{params[:effort_id]}]", :source_id => params[:activity_id], :user_id => current_user.id, :zoom => 25, :x_scale => 25, :y_scale => 25
+    end
   end
   
   def create
-    if params[:route][:source] == "StravaActivity"
+    strava_effort = params[:route][:source].match /^StravaEffort\[(\d+)\]$/
+    if !strava_effort.nil? || params[:route][:source] == "StravaActivity"
+      if !strava_effort.nil? 
+        effort_id = strava_effort[1]
+      else
+        effort_id = nil
+      end
+      
+      # return render :text => effort_id
+            
       # Import the route from strava activity
-      @route = Route.import_from_activity(params[:route][:source_id], current_user.id)
-      
-      #render :text => @route
-      #return
-      
-      redirect_to edit_route_path(:id => @route.id)
+      @route = Route.import_from_activity(params[:route][:source_id], current_user.id, effort_id)
     end
-    # todo: import from segment and from route
+    
+    redirect_to edit_route_path(:id => @route.id)
   end
 
   def edit
@@ -62,7 +71,7 @@ class RoutesController < ApplicationController
   
     def route_params
       params.require(:route).permit(
-        :name, :x_scale, :y_scale, :zoom, :renderer, :renderer_options, 
+        :name, :x_scale, :y_scale, :zoom, :renderer, :renderer_options, :crop_start_distance, :crop_stop_distance,
         waypoints_attributes: [ :id, :name, :distance, :elevation, :_destroy ]
       )
     end

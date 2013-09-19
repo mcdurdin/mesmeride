@@ -11,10 +11,19 @@
   </tbody>
 </table>
 
-<h3>Import specific activity</h3>
+<h3>Import specific activity, segment or effort</h3>
 
 <%= form_for(@strava_activity) do |f| %>
-  <%= f.label :activity_id, "Strava Activity ID or URL" %>
-  <%= f.text_field :activity_id, :placeholder => 'Activity ID or URL' %>
+  <%= f.label :activity_id, "Strava Activity, Segment or Effort URL" %>
+  <%= f.text_field :activity_id, :placeholder => 'Activity ID, http://www.strava.com/activities....' %>
   <%= f.submit "Download Activity", class: "btn btn-primary" %>
 <% end %>
+
+<p>You can enter:</p>
+
+<ul>
+  <li>A Strava Activity ID (just the number)</li>
+  <li>A Strava Activity URL, e.g. http://app.strava.com/activities/23758701</li>
+  <li>A Strava Effort URL, e.g. http://app.strava.com/activities/23758701#424577728</li>
+  <li>A Strava Segment URL, e.g. http://app.strava.com/segments/781004</li>
+</ul>

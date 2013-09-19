@@ -37,6 +37,8 @@ routeCoffee = ->
     renderer.zoom = $('#zoom-slider').slider('value') / 25
     renderer.scale = $('#scale-slider').slider('value') / 25
     renderer.yScale = $('#y-slider').slider('value') / 25
+    renderer.cropStart = $('#crop-slider').slider('values', 0)
+    renderer.cropStop = $('#crop-slider').slider('values', 1)
 
     if(window.renderer_options['color']) 
       $('#h10k_color').val(window.renderer_options['color'])
@@ -48,6 +50,11 @@ routeCoffee = ->
   $(window).unbind('resize', windowResize)
 
   if $('body').data('controller') == 'routes' && $('body').data('action') == 'edit'
+    
+    routeDistance = window.streams.distance[window.streams.distance.length-1]
+    
+    if $('#crop-slider').data('stop') == 0 || $('#crop-slider').data('stop') == ''
+      $('#crop-slider').data('stop', routeDistance)
 
     #
     # Toolboxes and resizing
@@ -79,15 +86,70 @@ routeCoffee = ->
         renderer.yScale = ui.value / 25
         renderer.postRedraw()
 
-    updateRenderer()
-   
+    #
+    # Add a slider for cropping the ride
+    #
+        
+    $( "#crop-slider" ).slider
+      range: true
+      values: [ $('#crop-slider').data('start'), $('#crop-slider').data('stop') ]
+      min: 0
+      max: routeDistance
+      change: (event,ui) ->
+        renderer.baseScale = 0
+        renderer.baseVerticalMultiplier = 0
+        renderer.cropStart = $(this).slider('values', 0)
+        renderer.cropStop = $(this).slider('values', 1)
+        renderer.postRedraw()
+        
+    #
+    #  And override the default arrow behaviour for more sensible increments
+    #
+        
+    .keydown (event) ->
+    
+      rangeBound = (index, otherVal, val) ->
+        if index == 0
+          Math.min(0, Math.max(val, otherVal-1))
+        else
+          Math.max(otherVal+1, Math.min(val, routeDistance))
+      
+      index = $( event.target ).data( "ui-slider-handle-index" )
+      curVal = $(this).slider('values', index)
+      switch event.keyCode
+        when $.ui.keyCode.PAGE_UP then newVal = curVal - 100
+        when $.ui.keyCode.PAGE_DOWN then newVal = curVal + 100
+        when $.ui.keyCode.LEFT then newVal = curVal - 1
+        when $.ui.keyCode.RIGHT then newVal = curVal + 1
+        when $.ui.keyCode.HOME then newVal = 0
+        when $.ui.keyCode.END then newVal = routeDistance
+        else return true
+        
+      $(this).slider('values', index, rangeBound(index, $(this).slider('values',if index==1 then 0 else 1), newVal))
+      
+      event.preventDefault()
+    
+    $('#crop-slider .ui-slider-handle').tooltip(
+      title: ->
+        index = $( this ).data( "ui-slider-handle-index" )
+        
+        "#{$('#crop-slider').slider('values', index)/1000}km"
+      trigger: 'hover focus manual'
+      animation: false
+      container: 'body'
+    ).unbind('keydown')
+    
+    #
+    # Now that we are configured, draw the display
+    #
+    
     $( "#surface-container" ).height($('#bottom-anchor').offset().top - $('.navbar-fixed-top').outerHeight() - $('.footbox').outerHeight());
 
+    updateRenderer()
+   
     #
     # Waypoint manipulation
     #
-    
-    routeDistance = window.streams.distance[window.streams.distance.length-1]
     
     waypointChange = (e) ->  
       for w in waypoints 
@@ -153,7 +215,7 @@ routeCoffee = ->
         #
         # override default keyboard events because pgup/dn are too large an increment
         #
-        
+
         ).keydown (event) ->
           switch event.keyCode
             when $.ui.keyCode.PAGE_UP then $(this).slider('value', Math.max($(this).slider('value') - 100, 0))
@@ -217,6 +279,8 @@ routeCoffee = ->
       $('#route_zoom').val($('#zoom-slider').slider('value'))
       $('#route_x_scale').val($('#scale-slider').slider('value'))
       $('#route_y_scale').val($('#y-slider').slider('value'))
+      $('#route_crop_start_distance').val($('#crop-slider').slider('values', 0))
+      $('#route_crop_stop_distance').val($('#crop-slider').slider('values', 1))
       $('.edit_route').submit()
       
     #

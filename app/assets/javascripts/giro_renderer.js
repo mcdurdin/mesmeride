@@ -1,6 +1,6 @@
 window.mesmeride = window.mesmeride || {}
 
-window.stravaOnSteroids = window.mesmeride.giroRenderer = {
+window.mesmeride.giroRenderer = {
   name : 'giro',
   
   lengthMultiplierLarge : 0.001, 
@@ -10,6 +10,8 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
   scale : 1,  // will be calculated to window size on first load
   zoom : 1, 
   yScale : 1,
+  cropStart : 0,
+  cropStop : 0,
   
   sections : [],
 
@@ -26,20 +28,20 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
       $('head').append(li);
     }
 
-    stravaOnSteroids.baseScale = 0;   // force a recalc of the basic scale
-    stravaOnSteroids.baseVerticalMultiplier = 0;
+    window.mesmeride.giroRenderer.baseScale = 0;   // force a recalc of the basic scale
+    window.mesmeride.giroRenderer.baseVerticalMultiplier = 0;
   },
 
   postRedraw: function(time) {
-    if(stravaOnSteroids.redrawTimeoutHandle) {
-      window.clearTimeout(stravaOnSteroids.redrawTimeoutHandle);
+    if(window.mesmeride.giroRenderer.redrawTimeoutHandle) {
+      window.clearTimeout(window.mesmeride.giroRenderer.redrawTimeoutHandle);
     }
-    stravaOnSteroids.redrawTimeoutHandle = window.setTimeout(stravaOnSteroids.redrawDo, time ? time : 50);
+    window.mesmeride.giroRenderer.redrawTimeoutHandle = window.setTimeout(window.mesmeride.giroRenderer.redrawDo, time ? time : 50);
   },
 
   redrawDo: function() {
-    stravaOnSteroids.redrawTimeoutHandle = null;
-    stravaOnSteroids.redraw();
+    window.mesmeride.giroRenderer.redrawTimeoutHandle = null;
+    window.mesmeride.giroRenderer.redraw();
   },
 
   redraw: function() {
@@ -62,18 +64,24 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
     
     /* Build data for rendering */
 
-    var data = {data: window.streams};
+    var data = {data: jQuery.extend(true, {}, window.streams)};
+    
+    var cropStart = window.mesmeride.giroRenderer.cropStart, cropStop = window.mesmeride.giroRenderer.cropStop;
+    if(cropStop == 0) cropStop = data.data.distance[data.data.distance.length - 1];
 
     data.data.details = [];
     var segs = waypoints;
     for(var i = 0; i < segs.length; i++) {
-      var seg = {
-        endX: segs[i].distance, 
-        endY: segs[i].elevation, 
-        name: segs[i].name, 
-        isClimb: true
-      };
-      data.data.details.push(seg);
+      if(segs[i].distance >= window.mesmeride.giroRenderer.cropStart &&
+         segs[i].distance < window.mesmeride.giroRenderer.cropStop) {
+        var seg = {
+          endX: segs[i].distance - window.mesmeride.giroRenderer.cropStart, 
+          endY: segs[i].elevation, 
+          name: segs[i].name, 
+          isClimb: true
+        };
+        data.data.details.push(seg);
+      }
     }
 
     data.data.minHeight = 10000;
@@ -81,34 +89,48 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
     data.data.minHeightLocation = [0, 0];
     data.data.maxHeightLocation = [0, 0];
 
-    stravaOnSteroids.data = data;
+    window.mesmeride.giroRenderer.data = data;
     
-    var i;
+    var i, startI = 0;
     
     /* calculate max and min altitude in metres */
     
     for (i = 0; i < data.data.altitude.length; i++) {
-        if (data.data.altitude[i] < data.data.minHeight) {
-            data.data.minHeight = data.data.altitude[i];
-        }
-        if (data.data.altitude[i] > data.data.maxHeight) {
-            data.data.maxHeight = data.data.altitude[i];
-        }
+      if (data.data.altitude[i] < data.data.minHeight) {
+          data.data.minHeight = data.data.altitude[i];
+      }
+      if (data.data.altitude[i] > data.data.maxHeight) {
+          data.data.maxHeight = data.data.altitude[i];
+      }
+      if (data.data.distance[i] < cropStart) {
+        startI = i + 1;
+      }
+      if (data.data.distance[i] > cropStop) {
+        data.data.distance = data.data.distance.slice(0, i);
+        data.data.altitude = data.data.altitude.slice(0, i);
+        break;
+      }
+      data.data.distance[i] -= cropStart;
+    }
+    
+    if(startI > 0) {
+      data.data.distance = data.data.distance.slice(startI);
+      data.data.altitude = data.data.altitude.slice(startI);
     }
 	
     var overallGrad = (data.data.maxHeight - data.data.minHeight); /* / data.data.distance[data.data.distance.length-1];  */
 
-    if(!stravaOnSteroids.baseScale) {
-      stravaOnSteroids.baseScale = ($(canvas).parent().innerWidth() - 72) / data.data.distance[data.data.distance.length-1];
-      stravaOnSteroids.baseVertMultiplier = Math.min(0.75, $(canvas).parent().innerHeight() / overallGrad);
+    if(!window.mesmeride.giroRenderer.baseScale) {
+      window.mesmeride.giroRenderer.baseScale = ($(canvas).parent().innerWidth() - 72) / data.data.distance[data.data.distance.length-1];
+      window.mesmeride.giroRenderer.baseVertMultiplier = Math.min(0.75, $(canvas).parent().innerHeight() / overallGrad);
     }
     
-    var f = stravaOnSteroids.scale * stravaOnSteroids.baseScale;
+    var f = window.mesmeride.giroRenderer.scale * window.mesmeride.giroRenderer.baseScale;
     
     var xStep = 0.1;
     var yStep = 50;
 	
-    var vertMultiplier = stravaOnSteroids.baseVertMultiplier * stravaOnSteroids.yScale;
+    var vertMultiplier = window.mesmeride.giroRenderer.baseVertMultiplier * window.mesmeride.giroRenderer.yScale;
 
     var angle = 8 * Math.PI / 180;
 
@@ -124,7 +146,7 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
   },
 
   inverse_transform: function(x, y, angle) {
-      var matrix = [stravaOnSteroids.zoom, Math.tan(angle) * stravaOnSteroids.zoom, 0, stravaOnSteroids.zoom, 0, Math.tan(-angle) * stravaOnSteroids.zoom]; /* Skew transform */
+      var matrix = [window.mesmeride.giroRenderer.zoom, Math.tan(angle) * window.mesmeride.giroRenderer.zoom, 0, window.mesmeride.giroRenderer.zoom, 0, Math.tan(-angle) * window.mesmeride.giroRenderer.zoom]; /* Skew transform */
       return { x: x * matrix[0] + y * matrix[2] + 1 * matrix[4], y: x * matrix[1] + y * matrix[3] + 1 * matrix[5] };
   },
 
@@ -141,7 +163,7 @@ window.stravaOnSteroids = window.mesmeride.giroRenderer = {
     c.width = dt.x;
     c.height = dt.y;
 
-    matrix = [stravaOnSteroids.zoom, Math.tan(-angle) * stravaOnSteroids.zoom, 0, stravaOnSteroids.zoom, 0, (data.distance[data.distance.length-1]*xf+48) * Math.tan(angle) * stravaOnSteroids.zoom]; /* Skew transform */
+    matrix = [window.mesmeride.giroRenderer.zoom, Math.tan(-angle) * window.mesmeride.giroRenderer.zoom, 0, window.mesmeride.giroRenderer.zoom, 0, (data.distance[data.distance.length-1]*xf+48) * Math.tan(angle) * window.mesmeride.giroRenderer.zoom]; /* Skew transform */
 
     var dw = { x: -w * Math.cos(angle), y: -w * Math.sin(angle) };    /* Apply "3D" */
     dw = this.inverse_transform(dw.x, dw.y, angle);  /* Remove skew */
