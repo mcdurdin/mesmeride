@@ -113,7 +113,7 @@ routeCoffee = ->
     
       rangeBound = (index, otherVal, val) ->
         if index == 0
-          Math.min(0, Math.max(val, otherVal-1))
+          Math.max(0, Math.min(val, otherVal-1))
         else
           Math.max(otherVal+1, Math.min(val, routeDistance))
       
