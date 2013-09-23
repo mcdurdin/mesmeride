@@ -1,0 +1,17 @@
+<li>
+  <div class='thumbnail' data-id='<%= route_image.id %>'>
+    <button class='close' type='button'>&times;</button>
+    <div class='thumbholder'>
+      <img data-src="holder.js/150x150" alt="" src="<%= route_image.image.url(:small) %>" />
+    </div>
+    
+    <%= button_to 'delete', {:controller => :route_images, :action => 'destroy', :id => route_image.id }, :method => 'delete', :remote => true %>
+
+    <div class='thumbcommands' data-img='<%= route_image.image.url %>' data-alt='<%= @route.name %>' data-src='<%= route_image_url(route_image.id) %>'>
+      <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= route_image_url(route_image.id) %>" data-text="Check out the hills I climbed, made beautiful with www.mesmeride.com" data-via="mesmeride" data-count="none">Tweet</a>
+      <%= button_tag '', :class => 'share-to-facebook', :type => 'button' %><br/>
+      <%= button_tag '', :class => 'share-to-blog', :type => 'button' %>
+      <%= button_to '', {:controller => :route_images, :action => 'download', :id => route_image.id }, :method => 'get', :class => 'share-download' %>
+    </div>
+  </div>
+</li>

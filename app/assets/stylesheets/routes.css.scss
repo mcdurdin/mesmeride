@@ -11,7 +11,7 @@ body[data-controller=routes] {
     width: auto;
   }
 
-  .alert {
+  & > container > .alert {
     position: absolute;
     width: 800px;
     z-index: 10;
@@ -115,11 +115,22 @@ body[data-controller=routes] {
     }
   }
   
+  #share-button, #save-button {
+    width: 90px;
+    margin: 4px 0;
+  }
+  
   #tools {
     .size-slider {
       width: 120px;
       margin: 0 8px;
     }
+  }
+  
+  #image-assets {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
   }
 
   footer {
@@ -146,5 +157,116 @@ body[data-controller=routes] {
     height: 0px;
     visibility: hidden;
     overflow: hidden;
+  }
+
+  #save-form #save-thumbs {
+  
+    height: 240px;
+    overflow-x: auto;
+    border: solid 1px #cccccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+    white-space: nowrap;
+    margin-left: 0;
+    
+    li {
+      margin-bottom: 0;
+      margin-top: 10px;
+      &.deleting {
+        background: url('/assets/spinner.gif') no-repeat 48px 48px;
+        div.thumbholder {
+          visibility: hidden !important;
+        }
+      }
+      & > div {
+      
+        &:hover {
+          border-color: #4444f0;
+          box-shadow: 0 0 6px rgba(32, 32, 240, 0.5);
+        }
+        position: relative;
+        & > button.close {
+          position: absolute;
+          right: 4px;
+        }
+        & > div.thumbholder {
+          height: 150px;
+          display: table-cell;
+          vertical-align: middle;
+
+          img {
+            width: 150px;
+          }
+        }
+        & > div.thumbcommands {
+          padding-left: 15px;
+        }
+      }
+      &.loading div {
+        background: url('spinner.gif') 48px 64px no-repeat;
+        transition: none !important;
+        span { 
+          display: none !important;
+        }
+      }
+      &#new-thumbnail div {
+        text-align: center;
+        vertical-align: middle;
+        white-space: normal;
+        display: table-cell;
+        width: 150px;
+        height: 194px;
+        font-size: 8pt;
+        span {
+          display: inline-block;
+          width: 60%;
+          line-height: 1.5em;
+          border: solid 1px #cccccc;
+          border-radius: 4px;
+          cursor: pointer;
+          &:hover {
+            background: #eeeeee;
+          }
+        }
+      }
+      form[method='post'] {
+        display: none;
+      }
+      
+      form[method='get'] {
+        display: inline-block;
+        margin: 0;
+        vertical-align: top;
+      }
+    }
+  }
+  
+  .share-to-blog {
+    background: url("/assets/embed.png") no-repeat top left;
+    border: none;
+    border-radius: 0;
+    height: 20px;
+    padding: 0;
+    vertical-align: top;
+    width: 58px;
+  }
+  
+  .share-to-facebook {
+    background: url("/assets/fbshare.png") no-repeat scroll 0 0 transparent;
+    height: 20px;
+    vertical-align: top;
+    width: 60px;
+    border: none;
+  }
+  
+  .share-download {
+    background: url("/assets/download.png") no-repeat top left;
+    border: none;
+    border-radius: 0;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    width: 58px;
   }
 }

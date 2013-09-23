@@ -1,3 +1,5 @@
+require 'tempfile'
+
 class RoutesController < ApplicationController
   before_action :signed_in_user
   
@@ -59,14 +61,55 @@ class RoutesController < ApplicationController
     data = params[:data]
     data = params[:data].match(/^data\:(.+?);base64,(.+)$/)
     
-    name = params[:name].gsub(/[^a-zA-Z0-9-_. ]/, '') + '.png'
+    name = params[:name].gsub(/[^a-zA-Z0-9_. -]/, '') + '.png'
     
     response.headers['Content-Type'] = data[1]
     response.headers['Content-Disposition'] = "attachment; filename=\"#{name}\""
     
     render :text => Base64.decode64(data[2])
   end
+  
+  def image_permalink
+    @route = Route.find(params[:id])
+    
+    if @route.route_images.length >= RouteImage::MAX_IMAGES_PER_ROUTE
+      render :text => [
+        :error => "You can only save at most #{RouteImage::MAX_IMAGES_PER_ROUTE} images per route."
+      ].to_json
+      # , :status => 403, :layout => false
+      return
+    end
 
+    data = params[:data]
+    data = params[:data].match(/^data\:(.+?);base64,(.+)$/)
+    
+    name = params[:name].gsub(/[^a-zA-Z0-9_. -]/, '') # + '.png'
+
+ 
+    Tempfile.open([name, '.png']) do |f|
+      f.binmode
+      f.write Base64.decode64(data[2])
+      f.rewind
+      
+      @route_image = RouteImage.create(:route_id => @route.id, :image => f)
+      @route_image.save!
+    end
+    
+    
+#  @route_image.download_url = object.url_for(:read,
+#    :response_content_disposition => "attachment; filename=#{name}").to_s
+#  @route_image.save!
+                   
+    
+    render :partial => 'route_image', :locals => { :route_image => @route_image }
+#    render :text => [
+#      :route_image_id => @route_image.id, 
+#      :url => @route_image.image.url, 
+#      :url_small => @route_image.image.url(:small),
+#      :url_download => download_url
+#      ].to_json
+  end
+  
   private
   
     def route_params

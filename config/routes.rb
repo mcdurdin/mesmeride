@@ -9,11 +9,15 @@ Mesmeride::Application.routes.draw do
     # only: [:index, :new, :edit, :show, :create, :update, :destroy]
     resources :waypoints, only: [:index, :create, :destroy]
   end
+  resources :route_images, only: [:show, :destroy]
 
+  match '/route_images/:id/download', :to => 'route_images#download', via: 'get'
+  
   #match '/routes', :to => 'routes#index', via: 'get'
   #match '/routes/new', :to => 'routes#new', via: 'get'
   #match '/routes/:id', :to => 'routes#show', via: 'get'
   match '/routes/:id/image_save', :to => 'routes#image_save', via: 'post'
+  match '/routes/:id/image_permalink', :to => 'routes#image_permalink', via: 'post'
   
   match '/get_activity',  to: 'strava_activities#new', via: 'get'
   
@@ -22,6 +26,7 @@ Mesmeride::Application.routes.draw do
   match '/contact', to: 'static_pages#contact', via: 'get'
   match '/signin',  to: 'static_pages#signin', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
+  match '/fb_channel', to: 'static_pages#fb_channel', via: 'get'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

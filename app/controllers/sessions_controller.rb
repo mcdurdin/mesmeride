@@ -11,12 +11,14 @@ class SessionsController < ApplicationController
       @auth = Authentication.create_from_hash(auth, current_user)
     end
     
-    # Log the authorizing user in.
-    sign_in @auth.user
+    if @auth.provider = 'strava'
+      # Log the authorizing user in.
+      sign_in @auth.user
 
-    # Tell them, and go home    
-    flash[:notice] = "Welcome, #{current_user.first_name}."
-    redirect_to root_url
+      # Tell them, and go home    
+      flash[:notice] = "Welcome, #{current_user.first_name}."
+      redirect_to root_url
+    end
   end
   
   def destroy

@@ -11,12 +11,9 @@
         <tr><th>Name</th><th>Distance</th></tr>
       </thead>
       <tbody>
-         <!--@route.waypoints.each do |waypoint|  -->
           <%= f.fields_for :waypoints do |wf| %>
             <% render :partial => 'waypoint', :locals => { :f => wf } %>
           <% end %>
-        <!-- end -->
-        <!-- render @route.waypoints -->
         </tbody>
       </table>
       
@@ -43,10 +40,12 @@
   <table>
     <%= yield :jstemplates %>
   </table>
-  <%= form_tag 'image_save', :id => 'image_save' do %>
-    <%= text_area_tag :data %>
-    <%= text_field_tag :name %>
-  <% end %>
+  <%= render partial: 'image_save' %>
+</div>
+<div id='image-assets'>
+  <%= image_tag("mesmeride-watermark.png", :id => 'watermark') %>
+  <%= image_tag("mesmeride-watermark-small.png", :id => 'watermark-small') %>
+  <%= image_tag("mesmeride-watermark-tiny.png", :id => 'watermark-tiny') %>
 </div>
 
 <!--  javascript_include_tag "giro_renderer", "data-turbolinks-track" => true  -->

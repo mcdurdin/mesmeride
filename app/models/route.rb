@@ -1,6 +1,7 @@
 class Route < ActiveRecord::Base
   belongs_to :user
   has_many :waypoints, dependent: :destroy
+  has_many :route_images, dependent: :destroy
   accepts_nested_attributes_for :waypoints, :allow_destroy => true
   
   def self.import_from_activity(activity_id, user_id, effort_id)

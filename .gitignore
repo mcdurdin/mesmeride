@@ -25,3 +25,4 @@ doc/
 .idea
 .secret
 .strava_secret_key
+start-server.bat

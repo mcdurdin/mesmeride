@@ -269,13 +269,98 @@ routeCoffee = ->
     # Save and Export
     #
 
-    $('#export-button').click ->
+    $('#share-button').click ->
+      if $('#save-form #save-thumbs > li').length == 1
+        export_image()
+      
+      $('#save-form').dialog('open')
+
+    export_image = ->
+      $('#save-form .thumbnails #new-thumbnail').addClass('loading')
       c = document.getElementById('surface')
       img = c.toDataURL('image/png')
       $('#image_save textarea#data').val(img)
       $('#image_save input#name').val($('#route_name').val())
       $('#image_save').submit()
       
+    # delete button for thumbnails
+
+    bind_share_buttons = ->
+    
+      $('.share-to-facebook').unbind('click').click ->
+        FB.ui
+           method: 'feed'
+           name: $('#route_name').val() + ' - by Mesmeride'
+           # caption: 'Bringing Facebook to the desktop and mobile web',
+           link: $(this).parent().data('src')
+           description: 'Take a look at the hills I climbed on my ride '+$('#route_name').val()+', made beautiful with www.mesmeride.com!'
+           picture: $(this).parent().data('img') #find('img').attr('src'),
+     
+      $('.share-to-twitter').unbind('click').click ->
+        #window.mesemeride.authenticated = (e) ->
+        #  alert(e)
+        window.open('/auth/twitter')
+    
+      $('#save-form .thumbnails form').unbind('ajax:success').bind('ajax:success', (evt, data, status, xhr) ->
+        $(this).parent().parent().remove()
+      )
+          
+      $('#save-form .thumbnails button.close').unbind('click').click (e) ->
+        $(this).parent().parent().attr('disabled', 'disabled')
+                        .addClass('deleting')
+                        .find('form[method="post"]').submit()
+
+      $('.share-to-blog').unbind('click').click (e) ->
+        $('#embed-form textarea').val("<img src='#{$(this).parent().data('img')}' alt='#{$(this).parent().data('alt')}' />")
+        $('#embed-form').dialog('open')
+        
+    bind_share_buttons()
+    
+    # new image
+    
+    $('#save-form .thumbnails #new-thumbnail div span').click (e) ->
+      export_image()
+      e.preventDefault()
+      false
+
+    $('#image_save').bind('ajax:success', (evt, data, status, xhr) ->
+      newThumbnail = $('#save-form .thumbnails #new-thumbnail')
+      newThumbnail.removeClass('loading')
+      if xhr.responseText.match(/error/) 
+        data = JSON.parse(xhr.responseText)
+        alert(data[0].error)
+      else
+        $(newThumbnail).before(xhr.responseText)
+        
+        # apply the Twitter button style
+        $.ajax(
+          url: 'http://platform.twitter.com/widgets.js'
+          dataType: 'script'
+          cache:true
+        )
+        
+        # bind all the other buttons
+        bind_share_buttons()
+    )
+    
+    $('#save-form').dialog(
+      autoOpen: false
+      modal: true
+      width: 800
+      buttons: 
+        Cancel = ->
+          $(this).dialog('close')
+    )
+    
+    $('#embed-form').dialog(
+      autoOpen: false,
+      modal: true
+      width: 600
+      buttons:
+        Cancel = ->
+          $(this).dialog('close')
+    )
+       
     $('#save-button').click ->
       renderer_options = { color : $('#h10k_color').val() };
       $('#route_renderer_options').val(JSON.stringify(renderer_options))
@@ -308,7 +393,7 @@ routeCoffee = ->
       renderer.color = $(this).val()
       renderer.postRedraw()
      
-    window.mesmeride.afterRender = ->
+    window.mesmeride.onAfterRender = ->
       # $('#surface').on('resize', -> 
       $('#dimensions').text($('#surface').outerWidth() + ' x ' + $('#surface').outerHeight())
     
