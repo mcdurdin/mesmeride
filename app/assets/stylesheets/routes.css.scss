@@ -173,7 +173,7 @@ body[data-controller=routes] {
       margin-bottom: 0;
       margin-top: 10px;
       &.deleting {
-        background: url('/assets/spinner.gif') no-repeat 48px 48px;
+        background: image-url("spinner.gif") no-repeat 48px 48px;
         div.thumbholder {
           visibility: hidden !important;
         }
@@ -203,7 +203,7 @@ body[data-controller=routes] {
         }
       }
       &.loading div {
-        background: url('spinner.gif') 48px 64px no-repeat;
+        background: image-url("spinner.gif") 48px 64px no-repeat;
         transition: none !important;
         span { 
           display: none !important;
@@ -242,7 +242,7 @@ body[data-controller=routes] {
   }
   
   .share-to-blog {
-    background: url("/assets/embed.png") no-repeat top left;
+    background: image-url("embed.png") no-repeat top left;
     border: none;
     border-radius: 0;
     height: 20px;
@@ -252,7 +252,7 @@ body[data-controller=routes] {
   }
   
   .share-to-facebook {
-    background: url("/assets/fbshare.png") no-repeat scroll 0 0 transparent;
+    background: image-url("fbshare.png") no-repeat scroll 0 0 transparent;
     height: 20px;
     vertical-align: top;
     width: 60px;
@@ -260,7 +260,7 @@ body[data-controller=routes] {
   }
   
   .share-download {
-    background: url("/assets/download.png") no-repeat top left;
+    background: image-url("download.png") no-repeat top left;
     border: none;
     border-radius: 0;
     height: 20px;
