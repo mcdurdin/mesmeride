@@ -273,6 +273,13 @@ routeCoffee = ->
       if $('#save-form #save-thumbs > li').length == 1
         export_image()
       
+      # apply the Twitter button style
+      $.ajax(
+        url: 'http://platform.twitter.com/widgets.js'
+        dataType: 'script'
+        cache:true
+      )
+
       $('#save-form').dialog('open')
 
     export_image = ->
