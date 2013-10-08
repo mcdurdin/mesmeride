@@ -18,6 +18,8 @@ class SessionsController < ApplicationController
       # Tell them, and go home    
       flash[:notice] = "Welcome, #{current_user.first_name}."
       redirect_to root_url
+    else
+      render :layout => false
     end
   end
   

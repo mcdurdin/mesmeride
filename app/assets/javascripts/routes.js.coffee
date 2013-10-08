@@ -286,9 +286,40 @@ routeCoffee = ->
       $('#save-form .thumbnails #new-thumbnail').addClass('loading')
       c = document.getElementById('surface')
       img = c.toDataURL('image/png')
-      $('#image_save textarea#data').val(img)
-      $('#image_save input#name').val($('#route_name').val())
-      $('#image_save').submit()
+
+      $.ajax(
+        url: 'image_permalink',
+        type: 'post',
+        data: {id: $('#image_save #id').val(), name: $('#route_name').val(), data: img }
+      ).done (data, status, xhr) ->
+              
+        #        $('#image_save textarea#data').val(img)
+        #      $('#image_save input#name').val($('#route_name').val())
+        #      $('#image_save').submit()
+        #$('#image_save').bind('ajax:success', (evt, data, status, xhr) ->
+
+        newThumbnail = $('#save-form .thumbnails #new-thumbnail')
+        newThumbnail.removeClass('loading')
+        if xhr.responseText.match(/error/) 
+          data = JSON.parse(xhr.responseText)
+          alert(data[0].error)
+        else
+          $(newThumbnail).before(xhr.responseText)
+          
+          # apply the Twitter button style
+          $.ajax(
+            url: 'http://platform.twitter.com/widgets.js'
+            dataType: 'script'
+            cache:true
+          )
+          
+          # bind all the other buttons
+          bind_share_buttons()
+      #    )
+      
+      
+      
+      
       
     # delete button for thumbnails
 
