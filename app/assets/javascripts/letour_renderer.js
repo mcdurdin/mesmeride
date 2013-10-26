@@ -92,10 +92,10 @@ window.mesmeride.letourRenderer = {
     /* calculate max and min altitude in metres */
     
     for (i = 0; i < data.data.altitude.length; i++) {
-      if (data.data.altitude[i] < data.data.minHeight) {
+      if (data.data.altitude[i] < data.data.minHeight && data.data.distance[i] >= cropStart) {
           data.data.minHeight = data.data.altitude[i];
       }
-      if (data.data.altitude[i] > data.data.maxHeight) {
+      if (data.data.altitude[i] > data.data.maxHeight && data.data.distance[i] >= cropStart) {
           data.data.maxHeight = data.data.altitude[i];
       }
       if (data.data.distance[i] < cropStart) {
